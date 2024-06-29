@@ -21,42 +21,42 @@ typedef struct QNodeTag {
 	the malloc where the next element will be inserted.
 */
 typedef struct QueueTag {
-	qNode* pHead;
-	qNode* pTail;
-} queue;
+	qNode* pQHead;
+	qNode* pQTail;
+} Queue;
 
-qNode* createNode(char* element) {
+qNode* queueNodeCreate(char* element) {
 	qNode* newNode = (qNode*) malloc(sizeof(qNode));
 	strcpy(newNode->data, element);
 	newNode->pNext = NULL;
 	return newNode;
 }
 
-queue* createQueue() {
-	queue* q = (queue*) malloc (sizeof(queue));
-	q->pHead = NULL;
-	q->pTail = NULL;
+Queue* queueCreate() {
+	Queue* q = (Queue*) malloc (sizeof(Queue));
+	q->pQHead = NULL;
+	q->pQTail = NULL;
 	return q;
 }
 
-void enqueue(queue* q, char* inputString) {
-	qNode* newQNode = createNode(inputString);
-	if (q->pTail == NULL) {
-		q->pHead = q->pTail = newQNode;
+void enqueue(Queue* q, char* inputString) {
+	qNode* newQNode = queueNodeCreate(inputString);
+	if (q->pQTail == NULL) {
+		q->pQHead = q->pQTail = newQNode;
 	}
-	q->pTail->pNext = newQNode;
-	q->pTail = newQNode;
+	q->pQTail->pNext = newQNode;
+	q->pQTail = newQNode;
 }
 
 
-char* dequeue(queue* q, char* outputString) {
-	if (q != NULL && q->pHead != NULL && q->pTail != NULL){
-		qNode* removeNode = q->pHead;
-		strcpy(outputString, q->pHead->data);
-		q->pHead = q->pHead->pNext;
+char* dequeue(Queue* q, char* outputString) {
+	if (q != NULL && q->pQHead != NULL && q->pQTail != NULL){
+		qNode* removeNode = q->pQHead;
+		strcpy(outputString, q->pQHead->data);
+		q->pQHead = q->pQHead->pNext;
 
-		if (q->pHead == NULL)
-			q->pTail = NULL;
+		if (q->pQHead == NULL)
+			q->pQTail = NULL;
 
 		free(removeNode);
 	}
@@ -65,67 +65,67 @@ char* dequeue(queue* q, char* outputString) {
 }
 
 
-char* queueHead(queue* q) {
-	return q->pHead->data;
+char* queueHead(Queue* q) {
+	return q->pQHead->data;
 }
 
-char* queueTail(queue *q) {
+char* queueTail(Queue *q) {
 
-	return q->pTail->data;
+	return q->pQTail->data;
 }
 
-bool queueEmpty(queue *q) {
-	return q == NULL || (q->pHead == NULL && q->pTail == NULL);
+bool queueEmpty(Queue *q) {
+	return q == NULL || (q->pQHead == NULL && q->pQTail == NULL);
 }
 
-void queueDelete(queue **q){
+void queueDelete(Queue **q){
 	qNode *previous;
-	while ((*q)->pHead != NULL && (*q)->pHead->pNext != NULL) {
-		previous = (*q)->pHead;
-        (*q)->pHead = (*q)->pHead->pNext;
+	while ((*q)->pQHead != NULL && (*q)->pQHead->pNext != NULL) {
+		previous = (*q)->pQHead;
+        (*q)->pQHead = (*q)->pQHead->pNext;
         free(previous);
         previous = NULL;
         
     }
-    if ((*q)->pHead != NULL){
-		free((*q)->pHead);
-    	(*q)->pHead = NULL;
+    if ((*q)->pQHead != NULL){
+		free((*q)->pQHead);
+    	(*q)->pQHead = NULL;
 	}
 
-	if ((*q)->pTail != NULL){
-		free((*q)->pTail);
-  	    (*q)->pTail = NULL;
+	if ((*q)->pQTail != NULL){
+		free((*q)->pQTail);
+  	    (*q)->pQTail = NULL;
 	}
 	free((*q));
 	(*q) = NULL;
 }
 
-void queuePrint(queue *q){
+void queuePrint(Queue *q){
 	qNode *current;
-	LOG(LQUE, "QUEUE: \n");
-	if (q != NULL && q->pHead != NULL){
-		current = q->pHead;
-		LOG(LQUE, "\'%s\'", current->data);
-		while (current->pNext != NULL && q->pHead != current->pNext){
+	// LOG(LQUE, "QUEUE: \n");
+	if (q != NULL && q->pQHead != NULL){
+		current = q->pQHead;
+		// LOG(LQUE, "\'%s\'", current->data);
+		while (current->pNext != NULL && q->pQHead != current->pNext){
 			current = current->pNext;
-			LOG(LQUE, "%s -> %s\'%s\'", F_RED, F_NORMAL, current->data);
+			// LOG(LQUE, "%s -> %s\'%s\'", F_RED, F_NORMAL, current->data);
 		}
-		LOG(LQUE, "\n");
+		// LOG(LQUE, "\n");
 	}
 }
 
-char *queueToString(queue *q, char *queueExpect, int size, int hasColor) {
+char *queueToString(Queue *q, char *queueExpect, int size, int hasColor) {
 	String255 temp = "";
 	qNode *current;
-	if (q != NULL && q->pHead != NULL){
-		current = q->pHead;
+	if (q != NULL && q->pQHead != NULL){
+		current = q->pQHead;
 		if (hasColor)
 			sprintf(queueExpect, "%s%s ",F_BLUE ,current->data);
 		else
 			sprintf(queueExpect, "%s ",current->data);
 		strncat(queueExpect, temp, size);
 
-		while (current->pNext != NULL && q->pHead != current->pNext){
+		while (current->pNext != NULL && q->pQHead != current->pNext){
 			current = current->pNext;
 			sprintf(temp, "%s ", current->data);
 			strncat(queueExpect, temp, size);
@@ -139,7 +139,7 @@ char *queueToString(queue *q, char *queueExpect, int size, int hasColor) {
 	return queueExpect;
 }
 
-void stringToQueue(char *strInput, queue *QueuePostfix){
+void stringToQueue(char *strInput, Queue *QueuePostfix){
 	int charPosition = 0;
 	int intOutput    = 0;
 	int parseState   = 0;
