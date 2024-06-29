@@ -2,16 +2,9 @@
 
 #include "stack.h"
 #include "queue.h"
-#include "adj_list.h"
+#include "construction.h"
 #include "graph.h"
 #include "traversal.h"
-
-typedef char String7[8];
-typedef char String15[16];
-typedef char String31[32];
-typedef char String63[64];
-typedef char String127[128];
-typedef char String255[256];
 
 #define INPUT_FILE_NAME "GRAPH.txt"
 #define OUTPUT_FILE_NAME "TRAVERSALS.txt"
@@ -37,7 +30,7 @@ int main() {
     scanf(" %s", startingVertex);
 
     /* produce the corresponding output file */
-    
+
 
     return 0;
 }

@@ -1,66 +1,95 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 
-#include "stack.h"
-#include "queue.h"
-#include "adj_list.h"
+typedef char String7[8];
+typedef char String15[16];
+typedef char String31[32];
+typedef char String63[64];
+typedef char String127[128];
+typedef char String255[256];
 
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
 
-// TODO: Return the appropriate error code.
-/**
- * Constructs an adjacency list given information from a file.
- */
-int constructAdjacencyList(char* fileName, AdjList* adjList) {
+typedef struct AdjacencyListNodeTag {
+	String15 vertexID;
+	struct AdjacencyListNodeTag* nextNode;
+} AdjListNode;
 
-    FILE* fp;
-    int numVertices;
-    int i;
 
-    String31 currentVertexID;
-    String31 neighborVertexID;
-    int hasReachedEnd;
-    Queue* q;
+typedef struct AdjacencyListTag {
+	AdjListNode* head;
+	AdjListNode* tail;
+	struct AdjacencyListTag* nextAdjList;
+} AdjList;
 
-    fp = fopen(fileName, "r");
-    if (fp == NULL) {
-        return -1; // TODO: change this to an error code
-    }
-    fscanf(fp, "%d", &numVertices);
 
-    /* iterate through each vertex of the undirected graph */
-    for (i = 0; i < numVertices; i++) {
+typedef struct GraphTag {
+	int vertices;
+	AdjList* head;
+	AdjList* tail;
+} Graph;
 
-        q = queueCreate();
 
-        fscanf(fp, "%s", currentVertexID);
-        enqueue(q, currentVertexID);
-
-        /* iterate through each neighbor of the current vertex */
-        do {
-            fscanf(fp, "%s", neighborVertexID);
-            hasReachedEnd = strcmp(neighborVertexID, "-1") == 0;
-            if (!hasReachedEnd) {
-                enqueue(q, neighborVertexID);
-            }
-        } while (!hasReachedEnd);
-
-        addQueueToAdjList(adjList, q);
-    }
-
-    fclose(fp);
+AdjListNode* createAdjListNode(String15 vertexID) {
+	AdjListNode* newNode = (AdjListNode*) malloc(sizeof(AdjListNode));
+	strcpy(newNode->vertexID, vertexID);
+	newNode->nextNode = NULL;
+	return newNode;
 }
 
 
-// TODO: Return the appropriate error code.
-/**
- * Constructs an undirected graph given an adjacency list.
- */
-int constructUndirectedGraph(AdjList* adjList) {
+AdjList* createAdjList() {
+	AdjList* newAdjList = (AdjList*) malloc(sizeof(AdjList));
+	newAdjList->head = NULL;
+	newAdjList->tail = NULL;
+	newAdjList->nextAdjList = NULL;
+	return newAdjList;
+}
 
-    
+
+Graph* createGraph() {
+	Graph* newGraph = (Graph*) malloc(sizeof(Graph));
+	newGraph->vertices = 0;
+	newGraph->head = NULL;
+	newGraph->tail = NULL;
+	return newGraph;
+}
+
+
+void addVertexToAdjList(AdjList* adjList, String15 vertexID) {
+	AdjListNode* newNode = createAdjListNode(vertexID);
+	AdjListNode* current;
+	if (adjList->head == NULL && adjList->tail == NULL) { // empty adjacency list
+		adjList->head = adjList->tail = newNode;
+	} else { // nonempty adjacency list
+		adjList->tail = adjList->tail->nextNode = newNode;
+	}
+}
+
+
+void addAdjListToGraph(Graph* graph, AdjList* adjList) {
+	++graph->vertices;
+	if (graph->head == NULL && graph->tail == NULL) { // empty graph
+		graph->head = graph->tail = adjList;
+	} else { // nonempty graph
+		graph->tail = graph->tail->nextAdjList = adjList;
+	}
+}
+
+
+// TODO: Implement printGraph()
+void printGraph(Graph* graph) {
+	
+}
+
+
+// TODO: Implement adjListDelete()
+void deleteGraph(Graph** graph) {
+
 }
 
 
