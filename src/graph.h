@@ -51,6 +51,7 @@ int constructAdjacencyList(char* fileName, AdjList* adjList) {
     }
 
     fclose(fp);
+    return 0;
 }
 
 
@@ -60,7 +61,7 @@ int constructAdjacencyList(char* fileName, AdjList* adjList) {
  */
 int constructUndirectedGraph(AdjList* adjList) {
 
-    
+    return 0;
 }
 
 

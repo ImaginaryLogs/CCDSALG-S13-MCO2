@@ -8,12 +8,12 @@
 
 // DFS
 int depthFirstSearch() {
-    
+    return 0;
 }
 
 // BFS
 int breadthFirstSearch() {
-
+    return 0;
 }
 
 #endif
