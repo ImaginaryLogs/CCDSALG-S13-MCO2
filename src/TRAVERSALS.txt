@@ -1,0 +1,15 @@
+
+Acheron        4
+BlackSwan      3
+Bronya         3
+FuXuan         3
+RuanMei        3
+SilverWolf     2
+Sparkle        3
+Topaz          7
+Zundamon       2
+Metan          2
+
+Acheron BlackSwan Sparkle Topaz Zundamon Bronya FuXuan RuanMei SilverWolf Metan 
+
+Acheron Zundamon Metan RuanMei Bronya FuXuan Topaz SilverWolf Sparkle BlackSwan 
