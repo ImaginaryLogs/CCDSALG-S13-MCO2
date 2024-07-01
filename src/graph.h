@@ -1,6 +1,10 @@
+#ifndef _GRAPH_H_
+#define _GRAPH_H_
+
+
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
 typedef char String7[8];
@@ -10,9 +14,6 @@ typedef char String63[64];
 typedef char String127[128];
 typedef char String255[256];
 
-#ifndef _GRAPH_H_
-#define _GRAPH_H_
-
 
 typedef struct AdjacencyListNodeTag {
 	String15 vertexID;
@@ -21,16 +22,18 @@ typedef struct AdjacencyListNodeTag {
 
 
 typedef struct AdjacencyListTag {
-	AdjListNode* head;
-	AdjListNode* tail;
+	String15 vertexID;
+	bool hasBeenExplored;
+	AdjListNode* firstNeighbor;
+	AdjListNode* lastNeighbor;
 	struct AdjacencyListTag* nextAdjList;
 } AdjList;
 
 
 typedef struct GraphTag {
 	int vertices;
-	AdjList* head;
-	AdjList* tail;
+	AdjList* firstAdjList;
+	AdjList* lastAdjList;
 } Graph;
 
 
@@ -42,10 +45,12 @@ AdjListNode* createAdjListNode(String15 vertexID) {
 }
 
 
-AdjList* createAdjList() {
+AdjList* createAdjList(char* vertexID) {
 	AdjList* newAdjList = (AdjList*) malloc(sizeof(AdjList));
-	newAdjList->head = NULL;
-	newAdjList->tail = NULL;
+	strcpy(newAdjList->vertexID, vertexID);
+	newAdjList->hasBeenExplored = false;
+	newAdjList->firstNeighbor = NULL;
+	newAdjList->lastNeighbor = NULL;
 	newAdjList->nextAdjList = NULL;
 	return newAdjList;
 }
@@ -54,29 +59,28 @@ AdjList* createAdjList() {
 Graph* createGraph() {
 	Graph* newGraph = (Graph*) malloc(sizeof(Graph));
 	newGraph->vertices = 0;
-	newGraph->head = NULL;
-	newGraph->tail = NULL;
+	newGraph->firstAdjList = NULL;
+	newGraph->lastAdjList = NULL;
 	return newGraph;
 }
 
 
-void addVertexToAdjList(AdjList* adjList, String15 vertexID) {
+void addNodeToAdjList(AdjList* adjList, String15 vertexID) {
 	AdjListNode* newNode = createAdjListNode(vertexID);
-	AdjListNode* current;
-	if (adjList->head == NULL && adjList->tail == NULL) { // empty adjacency list
-		adjList->head = adjList->tail = newNode;
+	if (adjList->firstNeighbor == NULL && adjList->lastNeighbor == NULL) { // empty adjacency list
+		adjList->firstNeighbor = adjList->lastNeighbor = newNode;
 	} else { // nonempty adjacency list
-		adjList->tail = adjList->tail->nextNode = newNode;
+		adjList->lastNeighbor = adjList->lastNeighbor->nextNode = newNode;
 	}
 }
 
 
 void addAdjListToGraph(Graph* graph, AdjList* adjList) {
 	++graph->vertices;
-	if (graph->head == NULL && graph->tail == NULL) { // empty graph
-		graph->head = graph->tail = adjList;
+	if (graph->firstAdjList == NULL && graph->lastAdjList == NULL) { // empty graph
+		graph->firstAdjList = graph->lastAdjList = adjList;
 	} else { // nonempty graph
-		graph->tail = graph->tail->nextAdjList = adjList;
+		graph->lastAdjList = graph->lastAdjList->nextAdjList = adjList;
 	}
 }
 
@@ -90,6 +94,49 @@ void printGraph(Graph* graph) {
 // TODO: Implement adjListDelete()
 void deleteGraph(Graph** graph) {
 
+}
+
+
+// TODO: Return the appropriate error code.
+/**
+ * Constructs a graph given adjacency list information from a file.
+ */
+int constructGraph(char* filename, Graph** graph) {
+
+	FILE* fp;
+	int numVertices;
+	int i;
+
+	String31 currentVertexID;
+	AdjList* currentAdjList;
+	String31 neighborVertexID;
+	bool hasReachedEnd;
+
+	fp = fopen(filename, "r");
+	if (fp == NULL) {
+		return -1; // TODO: change this to an error code
+	}
+
+	/* iterate through each vertex of the undirected graph */
+	fscanf(fp, "%d", &numVertices);
+	for (i = 0; i < numVertices; i++) {
+		
+		fscanf(fp, "%s", currentVertexID);
+		currentAdjList = createAdjList(currentVertexID);
+
+		/* iterate through each neighbor of the current vertex */
+		do {
+			fscanf(fp, "%s", neighborVertexID);
+            hasReachedEnd = strcmp(neighborVertexID, "-1") == 0;
+            if (!hasReachedEnd) {
+				addNodeToAdjList(currentAdjList, neighborVertexID);
+            }
+		} while (!hasReachedEnd);
+
+		addAdjListToGraph(graph, currentAdjList);
+	}
+
+	// TODO: return a success code
 }
 
 
