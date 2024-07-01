@@ -1,19 +1,27 @@
-#include <stdio.h>
-
-#include "stack.h"
-#include "queue.h"
-
 #ifndef _TRAVERSAL_H_
 #define _TRAVERSAL_H_
 
+
+#include <stdio.h>
+#include "stack.h"
+#include "queue.h"
+#include "graph.h"
+
+#define OUTPUT_FILENAME "TRAVERSALS.txt"
+
+
+// TODO: Return the appropriate error code.
 // DFS
-int depthFirstSearch() {
-    return 0;
+int depthFirstSearch(Graph* graph, char* startingVertex) {
+    
 }
 
+
+// TODO: Return the appropriate error code.
 // BFS
-int breadthFirstSearch() {
-    return 0;
+int breadthFirstSearch(Graph* graph, char* startingVertex) {
+  
 }
+
 
 #endif

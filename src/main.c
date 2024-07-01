@@ -1,43 +1,35 @@
 #include <stdio.h>
-
-#include "stack.h"
-#include "queue.h"
-#include "adj_list.h"
 #include "graph.h"
+#include "queue.h"
+#include "stack.h"
 #include "traversal.h"
 
-typedef char String7[8];
-typedef char String15[16];
-typedef char String31[32];
-typedef char String63[64];
-typedef char String127[128];
-typedef char String255[256];
+#define INPUT_FILENAME "GRAPH.txt"
 
-#define INPUT_FILE_NAME "GRAPH.txt"
-#define OUTPUT_FILE_NAME "TRAVERSALS.txt"
 
 int main() {
     
     // program variables
-    String31 fileName, startingVertex;
-    AdjList* adjList;
+    String31 filename, startingVertex;
     int errorCode;
+    Graph* graph;
     
     /* ask the user for the filename */
     printf("Input filename: ");
-    scanf(" %s", fileName);
+    scanf(" %s", filename);
 
-    // TODO: Address the error code instances. Refer to MCO1.
-    /* construct the adjacency list and its corresponding undirected graph */
-    errorCode = constructAdjacencyList(fileName, adjList);
-    errorCode = constructUndirectedGraph(adjList);
+    // TODO: Address the error code. Refer to MCO1.
+    /* construct the undirected graph*/
+    errorCode = constructGraph(filename, &graph);
+    // insert error handling code here
 
     /* ask the user for the starting vertex */
     printf("Input starting vertex for the traversal: ");
     scanf(" %s", startingVertex);
 
-    /* produce the corresponding output file */
-    
+    /* execute the chosen traversal method and produce the output file */
+    breadthFirstSearch(graph, startingVertex);
+    depthFirstSearch(graph, startingVertex);
 
     return 0;
 }
