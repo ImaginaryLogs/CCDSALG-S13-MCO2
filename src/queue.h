@@ -26,14 +26,14 @@ typedef struct QueueTag {
 	qNode* pQTail;
 } Queue;
 
-qNode* queueNodeCreate(char* element) {
+qNode* createQueueNode(char* element) {
 	qNode* newNode = (qNode*) malloc(sizeof(qNode));
 	strcpy(newNode->data, element);
 	newNode->pNext = NULL;
 	return newNode;
 }
 
-Queue* queueCreate() {
+Queue* createQueue() {
 	Queue* q = (Queue*) malloc (sizeof(Queue));
 	q->pQHead = NULL;
 	q->pQTail = NULL;
@@ -41,17 +41,17 @@ Queue* queueCreate() {
 }
 
 void enqueue(Queue* q, char* inputString) {
-	qNode* newQNode = queueNodeCreate(inputString);
+	qNode* newQNode = createQueueNode(inputString);
 	if (q->pQTail == NULL) {
 		q->pQHead = q->pQTail = newQNode;
+	} else {
+		q->pQTail = q->pQTail->pNext = newQNode;
 	}
-	q->pQTail->pNext = newQNode;
-	q->pQTail = newQNode;
 }
 
 
 char* dequeue(Queue* q, char* outputString) {
-	if (q != NULL && q->pQHead != NULL && q->pQTail != NULL){
+	if (q != NULL && q->pQHead != NULL && q->pQTail != NULL) {
 		qNode* removeNode = q->pQHead;
 		strcpy(outputString, q->pQHead->data);
 		q->pQHead = q->pQHead->pNext;
@@ -75,11 +75,11 @@ char* queueTail(Queue *q) {
 	return q->pQTail->data;
 }
 
-bool queueEmpty(Queue *q) {
+bool isQueueEmpty(Queue *q) {
 	return q == NULL || (q->pQHead == NULL && q->pQTail == NULL);
 }
 
-void queueDelete(Queue **q){
+void deleteQueue(Queue **q){
 	qNode *previous;
 	while ((*q)->pQHead != NULL && (*q)->pQHead->pNext != NULL) {
 		previous = (*q)->pQHead;
@@ -101,17 +101,17 @@ void queueDelete(Queue **q){
 	(*q) = NULL;
 }
 
-void queuePrint(Queue *q){
+void printQueue(Queue *q){
 	qNode *current;
-	// LOG(LQUE, "QUEUE: \n");
+	printf("QUEUE: \n"); // LOG(LQUE, "QUEUE: \n");
 	if (q != NULL && q->pQHead != NULL){
 		current = q->pQHead;
-		// LOG(LQUE, "\'%s\'", current->data);
+		printf("\'%s\'", current->data); // LOG(LQUE, "\'%s\'", current->data);
 		while (current->pNext != NULL && q->pQHead != current->pNext){
 			current = current->pNext;
-			// LOG(LQUE, "%s -> %s\'%s\'", F_RED, F_NORMAL, current->data);
+			printf("%s -> %s\'%s\'", F_RED, F_NORMAL, current->data); // LOG(LQUE, "%s -> %s\'%s\'", F_RED, F_NORMAL, current->data);
 		}
-		// LOG(LQUE, "\n");
+		printf("\n\n"); // LOG(LQUE, "\n");
 	}
 }
 

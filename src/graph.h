@@ -23,6 +23,7 @@ typedef struct AdjacencyListNodeTag {
 
 typedef struct AdjacencyListTag {
 	String15 vertexID;
+	int degree;
 	bool hasBeenExplored;
 	AdjListNode* firstNeighbor;
 	AdjListNode* lastNeighbor;
@@ -48,6 +49,7 @@ AdjListNode* createAdjListNode(String15 vertexID) {
 AdjList* createAdjList(char* vertexID) {
 	AdjList* newAdjList = (AdjList*) malloc(sizeof(AdjList));
 	strcpy(newAdjList->vertexID, vertexID);
+	newAdjList->degree = 0;
 	newAdjList->hasBeenExplored = false;
 	newAdjList->firstNeighbor = NULL;
 	newAdjList->lastNeighbor = NULL;
@@ -72,11 +74,15 @@ void addNodeToAdjList(AdjList* adjList, String15 vertexID) {
 	} else { // nonempty adjacency list
 		adjList->lastNeighbor = adjList->lastNeighbor->nextNode = newNode;
 	}
+	++adjList->degree;
 }
 
 
+// TODO: Return an error code if graph is null.
 void addAdjListToGraph(Graph* graph, AdjList* adjList) {
+	// ### printf("Here 2\n");
 	++graph->vertices;
+	// ### printf("Vertices: %d\n", graph->vertices);
 	if (graph->firstAdjList == NULL && graph->lastAdjList == NULL) { // empty graph
 		graph->firstAdjList = graph->lastAdjList = adjList;
 	} else { // nonempty graph
@@ -101,7 +107,7 @@ void deleteGraph(Graph** graph) {
 /**
  * Constructs a graph given adjacency list information from a file.
  */
-int constructGraph(char* filename, Graph** graph) {
+int constructGraph(char* filename, Graph* graph) {
 
 	FILE* fp;
 	int numVertices;
@@ -114,14 +120,17 @@ int constructGraph(char* filename, Graph** graph) {
 
 	fp = fopen(filename, "r");
 	if (fp == NULL) {
+		printf("File not found!\n");
 		return -1; // TODO: change this to an error code
 	}
 
 	/* iterate through each vertex of the undirected graph */
 	fscanf(fp, "%d", &numVertices);
+	// ### printf("Vertices: %d\n", numVertices);
 	for (i = 0; i < numVertices; i++) {
-		
+		// ### printf("i = %d\n", i);
 		fscanf(fp, "%s", currentVertexID);
+		// ### printf("Vertex id = %s", currentVertexID);
 		currentAdjList = createAdjList(currentVertexID);
 
 		/* iterate through each neighbor of the current vertex */
@@ -131,12 +140,92 @@ int constructGraph(char* filename, Graph** graph) {
             if (!hasReachedEnd) {
 				addNodeToAdjList(currentAdjList, neighborVertexID);
             }
+			// ### printf("Here!!");
 		} while (!hasReachedEnd);
-
+		// ### printf("Here 1\n");
 		addAdjListToGraph(graph, currentAdjList);
+		// ### printf("Here 3\n");
 	}
 
   // TODO: return a success code
+}
+
+
+/**
+ * Gets an adjacency list from a graph given a vertex ID.
+ */
+AdjList* getAdjList(Graph* graph, char* vertexID) {
+
+	AdjList* adjList = NULL;
+	AdjList* currAdjList = graph->firstAdjList;
+	bool hasFoundAdjList = false;
+
+	while (currAdjList != NULL && !hasFoundAdjList) {
+		if (strcmp(currAdjList->vertexID, vertexID) == 0) {
+			adjList = currAdjList;
+			hasFoundAdjList = true;
+		}
+		currAdjList = currAdjList->nextAdjList;
+	}
+	return adjList;
+}
+
+
+/**
+ * Determines whether a particular vertex (i.e., adjacency list) of a graph has been explored.
+ */
+int isVertexExplored(Graph* graph, char* vertexID) {
+
+	AdjList* currVertex = graph->firstAdjList;
+	bool hasFoundVertex = false;
+	int hasBeenExplored = -1;
+
+	while (currVertex != NULL && !hasFoundVertex) {
+		if (strcmp(currVertex->vertexID, vertexID) == 0) {
+			hasBeenExplored = currVertex->hasBeenExplored;
+			hasFoundVertex = true;
+		} else {
+			currVertex = currVertex->nextAdjList;
+		}
+	}
+
+	return hasBeenExplored;
+}
+
+
+/**
+ * Sets the hasBeenExplored attribute of a particular vertex (i.e., adjacency list) of a graph to true.
+ */
+int setVertexToExplored(Graph* graph, char* vertexID) {
+
+	AdjList* currVertex = graph->firstAdjList;
+	bool hasFoundVertex = false;
+
+	while (currVertex != NULL && !hasFoundVertex) {
+		if (strcmp(currVertex->vertexID, vertexID) == 0) {
+			currVertex->hasBeenExplored = true;
+			hasFoundVertex = true;
+		} else {
+			currVertex = currVertex->nextAdjList;
+		}
+	}
+
+	if (hasFoundVertex)
+		return 0;
+	return 1;
+}
+
+
+/**
+ * Sets the hasBeenExplored attribute of all vertices (i.e., adjacency list) of a graph to false.
+ */
+int setGraphToUnexplored(Graph* graph) {
+	AdjList* currVertex = graph->firstAdjList;
+	while (currVertex != NULL) {
+		currVertex->hasBeenExplored = false;
+		currVertex = currVertex->nextAdjList;
+	}
+	return 1;
 }
 
 
