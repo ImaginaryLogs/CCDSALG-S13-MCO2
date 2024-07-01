@@ -1,12 +1,15 @@
 /**
  * Stores stack information.
  */
-
+#include "config.h"
+#include "utils.h"
 #include <stdlib.h>
 #include <stdbool.h>
 
 #ifndef _STACK_H_
 #define _STACK_H_
+
+#define LSTAK ENABLE_LOG_STACK
 
 /**
  * NodeTag is double-linked list.

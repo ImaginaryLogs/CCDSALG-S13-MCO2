@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "utils.h"
 
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
@@ -137,30 +138,6 @@ char *queueToString(Queue *q, char *queueExpect, int size, int hasColor) {
 
 	}
 	return queueExpect;
-}
-
-void stringToQueue(char *strInput, Queue *QueuePostfix){
-	int charPosition = 0;
-	int intOutput    = 0;
-	int parseState   = 0;
-	
-	String255 strOutput = "";
-	String255 token = "";
-
-	while((int) strlen(strInput) > 0 && (int) strlen(strInput) > charPosition) {
-		parseState = parseStringInput(strInput, &charPosition, &intOutput, strOutput);
-		
-		switch(parseState) {
-			case TOKEN_NUMBER:
-				sprintf(token, "%d", intOutput);
-				enqueue(QueuePostfix, token);
-				break;
-			case TOKEN_OPERATION:
-				if (strcmp(strOutput, " ") != 0)
-					enqueue(QueuePostfix, strOutput);
-				break; 
-		}
-	}
 }
 
 #endif

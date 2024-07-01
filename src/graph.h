@@ -93,7 +93,7 @@ void printGraph(Graph* graph) {
 
 // TODO: Implement adjListDelete()
 void deleteGraph(Graph** graph) {
-
+  
 }
 
 
@@ -136,7 +136,7 @@ int constructGraph(char* filename, Graph** graph) {
 		addAdjListToGraph(graph, currentAdjList);
 	}
 
-	// TODO: return a success code
+  // TODO: return a success code
 }
 
 
