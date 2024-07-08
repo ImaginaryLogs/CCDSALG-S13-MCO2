@@ -10,6 +10,6 @@ Topaz          7
 Zundamon       2
 Metan          2
 
-Acheron BlackSwan Sparkle Topaz Zundamon Bronya FuXuan RuanMei SilverWolf Metan 
+Metan RuanMei Zundamon Bronya Topaz Acheron FuXuan BlackSwan SilverWolf Sparkle 
 
-Acheron Zundamon Metan RuanMei Bronya FuXuan Topaz SilverWolf Sparkle BlackSwan 
+Metan Zundamon Acheron Topaz SilverWolf FuXuan Bronya Sparkle BlackSwan RuanMei 
