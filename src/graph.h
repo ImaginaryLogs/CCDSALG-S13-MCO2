@@ -108,7 +108,6 @@ void deleteGraph(Graph** graph) {
  * Constructs a graph given adjacency list information from a file.
  */
 int constructGraph(char* filename, Graph* graph) {
-
 	FILE* fp;
 	int numVertices;
 	int i;

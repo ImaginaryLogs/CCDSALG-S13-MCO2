@@ -1,0 +1,11 @@
+10
+Acheron BlackSwan Sparkle Topaz Zundamon -1
+BlackSwan Acheron Sparkle Topaz -1
+Bronya FuXuan RuanMei Topaz -1
+FuXuan Bronya Silverwolf Topaz -1
+RuanMei Bronya Topaz Metan -1
+SilverWolf FuXuan Topaz -1
+Sparkle Acheron BlackSwan Topaz -1
+Topaz Acheron BlackSwan Bronya FuXuan RuanMei SilverWolf Sparkle -1
+Zundamon Acheron Metan -1
+Metan RuanMei Zundamon -1

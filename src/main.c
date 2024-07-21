@@ -4,8 +4,9 @@
 #include "queue.h"
 #include "stack.h"
 #include "traversal.h"
+#include "gui.h"
 
-#define TEST_INPUT_FILENAME "..\\graphs\\GRAPH2.txt"
+#define TEST_INPUT_FILENAME "GRAPH2.txt"
 
 
 int main() {
@@ -26,6 +27,9 @@ int main() {
     // TODO: Address the error code. Refer to MCO1.
     /* construct the undirected graph */
     // ### strcat(directory, filename);
+    // String127 e = "";
+    // getcwd(e, 127);
+    // printf("%s", e);
     errorCode = constructGraph(TEST_INPUT_FILENAME, graph);
     if (errorCode == -1)
         printf("File not found.\n");
@@ -59,5 +63,6 @@ int main() {
 
     // deleteGraph(graph);
     printf("Reached end of program!\n");
+    createHTMLGraphic();
     return 0;
 }
