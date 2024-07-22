@@ -32,6 +32,17 @@ enum ParserState {
   END_OF_STRING
 };
 
+typedef struct DimensionTag {
+    int width;
+    int height;
+} dimension;
+
+typedef struct PositionTag {
+    int x;
+    int y;
+} position;
+
+
 #if DEBUG 
   /**
   * A developer's version of printf that is togglable - useful for debugging. 

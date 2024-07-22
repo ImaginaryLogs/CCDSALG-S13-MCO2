@@ -21,7 +21,7 @@ build: $(SRCS)
 		echo "   Building... $${file}";\
 	done
 	@echo ""
-	$(CC) $(CFLAGS) bin/main $^ 
+	$(CC) $(CFLAGS) bin/main $^ -lm
 	@echo ""
 	@echo "=== Building Complete ================================="
 

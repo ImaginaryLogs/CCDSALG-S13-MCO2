@@ -66,7 +66,6 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
 // TODO: Return the appropriate error code.
 // DFS
 int depthFirstSearch(Graph* graph, char* startingVertexID) {
-
     Stack* unexploredNodesStack = createStack();
     AdjList* currentVertexAdjList;
     bool hasFinishedExploringVertex;

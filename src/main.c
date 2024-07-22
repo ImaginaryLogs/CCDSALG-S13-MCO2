@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include "graph.h"
 #include "queue.h"
@@ -6,7 +7,7 @@
 #include "traversal.h"
 #include "gui.h"
 
-#define TEST_INPUT_FILENAME "GRAPH2.txt"
+#define TEST_INPUT_FILENAME "GRAPH1.txt"
 
 
 int main() {
@@ -63,6 +64,6 @@ int main() {
 
     // deleteGraph(graph);
     printf("Reached end of program!\n");
-    createHTMLGraphic();
+    createHTMLGraphic(graph);
     return 0;
 }
