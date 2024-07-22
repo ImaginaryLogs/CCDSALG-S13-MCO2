@@ -7,14 +7,14 @@
 #include "traversal.h"
 #include "gui.h"
 
-#define TEST_INPUT_FILENAME "GRAPH1.txt"
+#define TEST_INPUT_FILENAME "GRAPH2.txt"
 
 
 int main() {
     
     // program variables
-    String31 directory = "..\\graphs\\";
-    String31 filename;
+    // String31 directory = "..\\graphs\\";
+    // String31 filename;
     int errorCode;
     AdjList* currVertex;
     String31 startingVertexID;

@@ -4,13 +4,15 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>GUI</title>
+		
+	
 	</head>
-
+	
 	<body>
 	<h1>OUTPUT:</h1>
-	<svg width="1000" height="1000">
+	<svg width="5000" height="1000">
 
-	<line x1="960" y1="490" x2="872" y2="760" id="Acheron_BlackSwan" style="stroke:black;stroke-width:5"/>
+	<line id="Acheron_BlackSwan" x1="960" y1="490" x2="872" y2="760"  style="stroke:black;stroke-width:5"/>
 	<line x1="960" y1="490" x2="128" y2="220" id="Acheron_Sparkle" style="stroke:black;stroke-width:5"/>
 	<line x1="960" y1="490" x2="358" y2="53" id="Acheron_Topaz" style="stroke:black;stroke-width:5"/>
 	<line x1="960" y1="490" x2="642" y2="53" id="Acheron_Zundamon" style="stroke:black;stroke-width:5"/>
@@ -28,7 +30,7 @@
 	<line x1="642" y1="53" x2="872" y2="220" id="Zundamon_Metan" style="stroke:black;stroke-width:5"/>
 	<g>
 		<rect width="80" height="60" x="920" y="460" id="Acheron" rx="10" ry="10" fill="orange"/>
-		<text x="942" y="493" fill="black" font-size="12">Acheron</text>
+		<text id="Acheron" x="942" y="493" fill="black" font-size="12">Acheron</text>
 	</g>
 	<g>
 		<rect width="80" height="60" x="832" y="730" id="BlackSwan" rx="10" ry="10" fill="orange"/>
@@ -47,7 +49,7 @@
 		<text x="110" y="763" fill="black" font-size="12">RuanMei</text>
 	</g>
 	<g>
-		<rect width="80" height="60" x="1" y="460" id="SilverWolf" rx="10" ry="10" fill="orange"/>
+		<rect width="80" height="60" x="0" y="460" id="SilverWolf" rx="10" ry="10" fill="orange"/>
 		<text x="13" y="493" fill="black" font-size="12">SilverWolf</text>
 	</g>
 	<g>
@@ -67,5 +69,14 @@
 		<text x="860" y="223" fill="black" font-size="12">Metan</text>
 	</g>
 	</svg>
+	<br/>
+	<input type="button" value="Start" onclick="startAnimation()" />
+	<input type="button" value="Step" onclick="stepAnimation()" />
+	<input type="button" value="Stop" onclick="stopAnimation()" />
+
+	<script src="test.js">
+		
+	
+	</script>
 	</body>
 </html>

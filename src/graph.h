@@ -147,6 +147,7 @@ int constructGraph(char* filename, Graph* graph) {
 	}
 
   // TODO: return a success code
+  return 0;
 }
 
 

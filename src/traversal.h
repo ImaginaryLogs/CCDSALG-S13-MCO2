@@ -60,6 +60,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
     }
 
     fclose(fp);
+    return 0;
 }
 
 
@@ -112,6 +113,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
 
     fprintf(fp, "\n");
     fclose(fp);
+    return 0;
 }
 
 
