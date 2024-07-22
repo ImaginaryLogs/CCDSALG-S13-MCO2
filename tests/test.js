@@ -61,7 +61,7 @@ var newPositionsX = [...oldPositionsX];
 var newPositionsY = [...oldPositionsY]
 let otherPointindex, connections, conntected;
 function animate() {
-
+    SIZE = 250; 
     connectedPointsX = [];
     connectedPointsY = [];
     oldVelocitiesX = [];
@@ -79,7 +79,7 @@ function animate() {
         conntected = []
         
         lineNameIds.forEach((name) => {
-            connections = []
+            connections = [+SIZE]
             connections = name.split("_");
             
             if (connections[0] === parent) {
@@ -107,8 +107,8 @@ function animate() {
     })
 
     oldPositionsY.forEach((oldPosY, i) =>{
-        var parent = pointNameIds[i];
-        connectedPointsY = [];
+        var parent = pointNameIds[+SIZE];
+        connectedPointsY = [+SIZE];
         conntected = []
         
         lineNameIds.forEach((name) => {

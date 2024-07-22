@@ -211,24 +211,27 @@ char *drawSVGLineFromCenterToCenterId(char *buffer, int n, dimension size1, posi
 }
 
 char *drawSVGText(char *buffer, int n, position pos, char *strText){
-    const String31 CONST_RECT_TAGS[5] = {
-        "<text x=\"",
+    const String31 CONST_RECT_TAGS[6] = {
+        "<text id=\"Text", 
+        "\"x=\"",
         "\" y=\"",
         "\" fill=\"black\" font-size=\"",
         "\">",
         "</text>"
     };
     String255 strOutput = "";
-    sprintf(strOutput, "%s%d%s%d%s%d%s%s%s", CONST_RECT_TAGS[0], pos.x, CONST_RECT_TAGS[1], pos.y, CONST_RECT_TAGS[2], FONTSIZE, CONST_RECT_TAGS[3], strText, CONST_RECT_TAGS[4]);
+    sprintf(strOutput, "%s%s%s%d%s%d%s%d%s%s%s", CONST_RECT_TAGS[0], strText, CONST_RECT_TAGS[1], pos.x, CONST_RECT_TAGS[2], pos.y, CONST_RECT_TAGS[3], FONTSIZE, CONST_RECT_TAGS[4], strText, CONST_RECT_TAGS[5]);
     strncpy(buffer, strOutput, n);
     return buffer;
 }
+
 
 char *drawSVGTextOnRectCenter(char *buffer, int n, dimension size, position pos, char *strText){
     pos.x += (size.width - (FONTSIZE*((int) strlen(strText) - 1)) / 2) / 2;
     pos.y += (FONTSIZE/2 + size.height) / 2;
     return drawSVGText(buffer, n, pos, strText);
 }
+
 
 position computeNthPolygonPosition(position input, int radius, int order, int nSides){
     input.x = (int) roundl(radius * cos(2.0l*PI*order/nSides));
@@ -259,7 +262,7 @@ void instantiateNodes(Graph *graph, dimension rectSize, position nodes[], int si
     }
 }
 
-void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size){
+void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size, Queue *lineNames, Queue *pointNames){
     String255 strBufferSVG = "";
     String31 nodeNames[16];
     position nodes[16];
@@ -276,6 +279,7 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size){
     AdjList *currVertex = graph->firstAdjList;
     while (currVertex != NULL) {
         strcpy(nodeNames[exploredNodes], currVertex->vertexID);
+        enqueue(pointNames, currVertex->vertexID);
         exploredNodes++;
         currVertex = currVertex->nextAdjList;
     }
@@ -311,6 +315,7 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size){
                 childPos = nodes[nIndex];
                 fprintf(fpGRAPH, "\t%s\n", drawSVGLineFromCenterToCenterId(strBufferSVG, 255, rectSize, parentPos, nodeNames[i], rectSize, childPos, childName));
                 enqueue(traversedNodes, combinednames1);
+                enqueue(lineNames, combinednames1);
                 enqueue(traversedNodes, combinednames2);
             } else {
                 LOG(lGUI, "%s Not found: %s\n", nodeNames[i], childName);
@@ -359,16 +364,44 @@ void createHTMLGraphic(Graph *graph){
     fprintf(fp, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side, CONST_SVG_TAGS[1], side, CONST_SVG_TAGS[2]);
 
     // fprintf(fp, "%s\n", drawSVGRect(strBufferSVG, 255, p, e));
-    createCircleGraph(fp, graph, side);
+    Queue *lineNames = createQueue();
+    Queue *pointNames = createQueue();
+    Queue *textNames = createQueue();
+    createCircleGraph(fp, graph, side, lineNames, pointNames);
 
     for (nWrittenTags = 4; nWrittenTags < 9; nWrittenTags++){
         fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
     }
 
-    FILE *fp2 = fopen("pe.txt", "w");
+    FILE *fp2 = fopen("pe.txt", "r");
     String255 buffer = "";
+
+    fprintf(fp, "\tconst lineNameIds = [ \"%s\"", dequeue(lineNames, buffer));
+    while(!isQueueEmpty(lineNames)){
+        fprintf(fp, ", ");
+        fprintf(fp, "\"%s\"", dequeue(lineNames, buffer));
+    }
+    fprintf(fp, "]\n");
+    
+    enqueue(textNames, queueHead(pointNames));
+    fprintf(fp, "\tconst pointNameIds = [ \"%s\"", dequeue(pointNames, buffer));
+    while(!isQueueEmpty(pointNames)){
+        fprintf(fp, ", ");
+        enqueue(textNames, queueHead(pointNames));
+        fprintf(fp, "\"%s\"", dequeue(pointNames, buffer));
+    }
+    fprintf(fp, "]\n");
+
+
+    fprintf(fp, "\tconst textNames = [ \"Text%s\"", dequeue(textNames, buffer));
+    while(!isQueueEmpty(textNames)){
+        fprintf(fp, ", ");
+        fprintf(fp, "\"Text%s\"", dequeue(textNames, buffer));
+    }
+    fprintf(fp, "]\n");
+
     while (!feof(fp2)) {
-        fprintf(fp, "%s", fgets(buffer, 255, fp2));
+        fprintf(fp, "\t%s", fgets(buffer, 255, fp2));
     }
 
     for (nWrittenTags = 9; nWrittenTags < 11; nWrittenTags++){

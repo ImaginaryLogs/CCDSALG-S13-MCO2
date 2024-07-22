@@ -11,11 +11,11 @@ textNames.forEach((n) => TextObjs.push(document.getElementById(n)));
 pointNameIds.forEach((n) => initialObjSpeedX.push(0.0));
 pointNameIds.forEach((n) => initialObjSpeedY.push(0.0));
 
-const k = 0.2;
+const k = 1;
 const m = 10;
-const mu = 30;
+const mu = 10;
 const dt = 0.01;
-const restDistance = 150;
+const restDistance = 200;
 
 const calculateAcceleration = (position, speed, otherPositions) => {
     displacementForces = [];
@@ -140,8 +140,8 @@ function animate() {
     })
 
     TextObjs.forEach((textObj, i) => {
-        textObj.setAttribute("x", Math.abs(newPositionsX[i])+20);
-        textObj.setAttribute("y", Math.abs(newPositionsY[i])+40);
+        textObj.setAttribute("x", Math.abs(newPositionsX[i])+40);
+        textObj.setAttribute("y", Math.abs(newPositionsY[i])+30);
     })
 
     lineNameIds.forEach((name, i) => {
