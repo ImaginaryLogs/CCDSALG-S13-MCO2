@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,6 +43,77 @@ typedef struct PositionTag {
     int y;
 } position;
 
+/**
+ * Compares two strings case-insensitively.
+ */
+bool insensitiveStrCmp(char* str1, char* str2) {
+
+  bool isEqual = true;
+  int i;
+  
+  if (strlen(str1) != strlen(str2)) {
+    isEqual = false;
+  } else {
+    for (i = 0; i < strlen(str1); i++) {
+      if (tolower(str1[i]) != tolower(str2[i])) {
+        isEqual = false;
+      }
+    }
+  }
+
+  return isEqual;
+}
+
+/**
+ * Prints an array.
+ */
+void printArr(String31 arr[], int numElements, char message[]) {
+  printf("%s\n", message);
+  for (int i = 0; i < numElements; ++i) {
+    printf("%s ", arr[i]);
+  }
+  printf("\n");
+}
+
+/**
+ * Swaps the values of two strings.
+ */
+void swap(String31 str1, String31 str2) {
+  String31 temp;
+  strcpy(temp, str1);
+  strcpy(str1, str2);
+  strcpy(str2, temp);
+}
+
+/**
+ * Sorts an array of strings in increasing or decreasing lexicographical order.
+ */
+void sortArr(String31 arr[], int numElements, bool sortInIncreasingOrder) {
+  
+  int i, j;
+
+  printArr(arr, numElements, "Pre-sort:"); // testing
+
+  if (sortInIncreasingOrder) { // increasing lexicographical order
+    for (i = 0; i < numElements - 1; ++i) {
+      for (j = i + 1; j < numElements; ++j) {
+        if (strcmp(arr[j - 1], arr[j]) > 0) {
+          swap(arr[j - 1], arr[j]);
+        }
+      }
+    }
+  } else { // decreasing lexicographical order
+    for (i = numElements - 1; i >= 1; --i) {
+      for (j = 0; j < i; ++j) {
+        if (strcmp(arr[j], arr[j + 1]) < 0) {
+          swap(arr[j], arr[j + 1]);
+        }
+      }
+    }
+  }
+
+  printArr(arr, numElements, "Post-sort:"); // testing
+}
 
 #if DEBUG 
   /**
