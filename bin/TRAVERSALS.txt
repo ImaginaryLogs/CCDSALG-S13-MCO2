@@ -1,15 +1,9 @@
 
-Acheron        4
-BlackSwan      3
-Bronya         3
-FuXuan         3
-RuanMei        3
-SilverWolf     2
-Sparkle        3
-Topaz          7
-Zundamon       2
-Metan          2
+[0;36mBruce          1[0m
+[0;36mClark          2[0m
+[0;36mDiana          3[0m
+[0;36mHal            2[0m
 
-Topaz Acheron BlackSwan Bronya FuXuan RuanMei SilverWolf Sparkle Zundamon Metan 
+[0;32mClark Diana Hal Bruce [0m
 
-Topaz Acheron Zundamon Metan BlackSwan Bronya FuXuan RuanMei SilverWolf Sparkle 
+[0;35mClark Diana Bruce Hal [0m

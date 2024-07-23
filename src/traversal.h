@@ -11,6 +11,12 @@
 #define OUTPUT_FILENAME "..\\bin\\TRAVERSALS.txt"
 
 
+/**
+ * Traverses a graph data structure via Breadth-First Search (BFS) and prints the traversal to an output file.
+ * @param graph - pointer to the graph that will be traversed
+ * @param startingVertexID - string ID of the starting vertex for the traversal
+ * @return 0 if the traversal is successul; 1 if any problem occurred midway
+ */
 int breadthFirstSearch(Graph* graph, char* startingVertexID) {
 
     Queue* unexploredNodesQueue = createQueue();
@@ -26,17 +32,17 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
 
     FILE* fp = fopen(OUTPUT_FILENAME, "a");
     if (fp == NULL) {
-        printf("Error opening output file!\n");
+        printf("Error opening output file.\n");
         return -1;
     }
-    fprintf(fp, "\n\n");
+    fprintf(fp, "\n\n%s", F_GREEN);
 
     setGraphToUnexplored(graph);
     enqueue(unexploredNodesQueue, startingVertexID);
 
     errorCode = setVertexToExplored(graph, startingVertexID);
     if (errorCode == -1) {
-        printf("Vertex '%s' not found.\n", startingVertexID);
+        printf("%sVertex %s not found.%s\n", F_RED, startingVertexID, F_NORMAL);
         return -1;
     }
 
@@ -47,7 +53,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
 
         currentVertexAdjList = getAdjList(graph, currentVertexID);
         if (currentVertexAdjList == NULL) {
-            printf("Vertex '%s' not found.\n", currentVertexID);
+            printf("%sVertex %s not found.%s\n", F_RED, currentVertexID, F_NORMAL);
             return -1;
         }
         strcpy(currentVertexID, currentVertexAdjList->vertexID);
@@ -60,7 +66,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         while (!hasFinishedExploringVertex) {
             strcpy(currentNeighborVertexID, currentNeighborNode->vertexID);
             if (!doesVertexExist(graph, currentNeighborVertexID)) {
-                printf("Vertex '%s' not found.\n", currentNeighborVertexID);
+                printf("%sVertex %s not found.%s\n", F_RED, currentNeighborVertexID, F_NORMAL);
                 return -1;
             }
             if (!isVertexExplored(graph, currentNeighborVertexID)) {
@@ -81,11 +87,18 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         fprintf(fp, "%s ", currentVertexID); // print the vertex ID to the output file
     }
 
+    fprintf(fp, "%s", F_NORMAL);
     fclose(fp);
     return 0;
 }
 
 
+/**
+ * Traverses a graph data structure via Depth-First Search (DFS) and prints the traversal to an output file.
+ * @param graph - pointer to the graph that will be traversed
+ * @param startingVertexID - string ID of the starting vertex for the traversal
+ * @return 0 if the traversal is successul; 1 if any problem occurred midway
+ */
 int depthFirstSearch(Graph* graph, char* startingVertexID) {
     
     Stack* unexploredNodesStack = createStack();
@@ -101,17 +114,17 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
 
     FILE* fp = fopen(OUTPUT_FILENAME, "a");
     if (fp == NULL) {
-        printf("Error opening output file!\n");
+        printf("Error opening output file.\n");
         return -1;
     }
-    fprintf(fp, "\n\n");
+    fprintf(fp, "\n\n%s", F_MAGENTA);
 
     setGraphToUnexplored(graph);
     push(unexploredNodesStack, startingVertexID);
 
     errorCode = setVertexToExplored(graph, startingVertexID);
     if (errorCode == -1) {
-        printf("Vertex '%s' not found.\n", startingVertexID);
+        printf("%sVertex %s not found.%s\n", F_RED, startingVertexID, F_NORMAL);
         return -1;
     }
 
@@ -122,7 +135,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
 
         currentVertexAdjList = getAdjList(graph, currentVertexID);
         if (currentVertexAdjList == NULL) {
-            printf("Vertex '%s' not found.\n", currentVertexID);
+            printf("%sVertex %s not found.%s\n", F_RED, currentVertexID, F_NORMAL);
             return -1;
         }
         strcpy(currentVertexID, currentVertexAdjList->vertexID);
@@ -135,7 +148,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
         while (!hasFinishedExploringVertex) {
             strcpy(currentNeighborVertexID, currentNeighborNode->vertexID);
             if (!doesVertexExist(graph, currentNeighborVertexID)) {
-                printf("Vertex '%s' not found.\n", currentNeighborVertexID);
+                printf("%sVertex %s not found.%s\n", F_RED, currentNeighborVertexID, F_NORMAL);
                 return -1;
             }
             if (!isVertexExplored(graph, currentNeighborVertexID)) {
@@ -154,6 +167,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
         fprintf(fp, "%s ", currentVertexID); // print the vertex ID to the output file
     }
 
+    fprintf(fp, "%s", F_NORMAL);
     fprintf(fp, "\n");
     fclose(fp);
     return 0;

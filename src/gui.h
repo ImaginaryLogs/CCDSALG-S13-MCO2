@@ -175,8 +175,8 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph){
     String31 nodeNames[16];
     int exploredNodes = 0;
     int i = 0;
-    for (i = 0; i < graph->vertices; i++){
-        nodes[i] = computeNthPolygonPosition(nodes[i], 200, i, graph->vertices);
+    for (i = 0; i < graph->numVertices; i++){
+        nodes[i] = computeNthPolygonPosition(nodes[i], 200, i, graph->numVertices);
         nodes[i].x += 200;
         nodes[i].y += 200;
     }
@@ -197,7 +197,7 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph){
     String31 childNode ="";
     position parentPos, childPos;
     LOG(lGUI, "Points: %d\n", exploredNodes);
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         AdjList *currAdjList = getAdjList(graph, nodeNames[i]);
         AdjListNode *currNode = currAdjList->firstNeighbor;
         parentPos = nodes[i];
@@ -218,7 +218,7 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph){
         linearSearch(nodeNames, exploredNodes, nodeNames[i]);
     }
 
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         fprintf(fpGRAPH, "\t%s\n", drawSVGRect(strBufferSVG, 255, p, nodes[i]));
         fprintf(fpGRAPH, "\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, p, nodes[i], nodeNames[i]));
     }
