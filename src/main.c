@@ -5,10 +5,14 @@
 #include "queue.h"
 #include "stack.h"
 #include "traversal.h"
-#include "gui.h"
+// #include "gui.h"
 
-#define TEST_INPUT_FILENAME "GRAPH1.txt"
+#define TEST_INPUT_FILENAME "..\\graphs\\GRAPH2.txt"
 
+/**
+ * References:
+ * 
+ */
 
 int main() {
     
@@ -22,48 +26,40 @@ int main() {
     FILE *fp;
 
     /* ask the user for the filename */
-    // ### printf("Input filename: ");
-    // ### scanf(" %s", filename);
+    /*
+    printf("Input filename: ");
+    scanf(" %s", filename);
+    strcat(directory, filename);
+    */
 
-    // TODO: Address the error code. Refer to MCO1.
-    /* construct the undirected graph */
-    // ### strcat(directory, filename);
     // String127 e = "";
     // getcwd(e, 127);
     // printf("%s", e);
+
+    /* construct the undirected graph */
     errorCode = constructGraph(TEST_INPUT_FILENAME, graph);
-    if (errorCode == -1)
-        printf("File not found.\n");
-    // insert error handling code here
-
-    fp = fopen(OUTPUT_FILENAME, "w");
-    if (fp == NULL)
-        printf("Output file failed to be generated.\n");
-
-    // temporary; will be refactored elsewhere
-    currVertex = graph->firstAdjList;
-    while (currVertex != NULL) {
-        printf("\n%-15s%d", currVertex->vertexID, currVertex->degree);
-        fprintf(fp, "\n%-15s%d", currVertex->vertexID, currVertex->degree);
-        currVertex = currVertex->nextAdjList;
-        // ### printf("Here 4\n");
+    if (errorCode == -1) {
+        printf("%s not found.\n", filename);
+        return 1;
     }
-    printf("\n");
-    // ### printf("Here 5\n");
+
+    /* generate the output file */
+    fp = fopen(OUTPUT_FILENAME, "w");
+    printVertexInfoToGraph(fp, graph);
     fclose(fp);
 
     /* ask the user for the starting vertex */
     printf("Input starting vertex for the traversal: ");
     scanf(" %s", startingVertexID);
 
-    /* execute the chosen traversal method and produce the output file */
-    breadthFirstSearch(graph, startingVertexID);
-    printf("Finished BFS!\n");
-    depthFirstSearch(graph, startingVertexID);
-    printf("Finished DFS!\n");
-
-    // deleteGraph(graph);
-    printf("Reached end of program!\n");
-    createHTMLGraphic(graph);
+    /* execute the two traversal methods and produce the output files */
+    errorCode = breadthFirstSearch(graph, startingVertexID);
+    if (errorCode == 0) {
+        depthFirstSearch(graph, startingVertexID);
+        // createHTMLGraphic(graph);
+    }
+    
+    /* free allocated memory */
+    deleteGraph(&graph);
     return 0;
 }

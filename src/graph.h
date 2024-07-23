@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "utils.h"
 
 typedef char String7[8];
 typedef char String15[16];
@@ -78,11 +79,8 @@ void addNodeToAdjList(AdjList* adjList, String15 vertexID) {
 }
 
 
-// TODO: Return an error code if graph is null.
 void addAdjListToGraph(Graph* graph, AdjList* adjList) {
-	// ### printf("Here 2\n");
 	++graph->vertices;
-	// ### printf("Vertices: %d\n", graph->vertices);
 	if (graph->firstAdjList == NULL && graph->lastAdjList == NULL) { // empty graph
 		graph->firstAdjList = graph->lastAdjList = adjList;
 	} else { // nonempty graph
@@ -91,23 +89,17 @@ void addAdjListToGraph(Graph* graph, AdjList* adjList) {
 }
 
 
-// TODO: Implement printGraph()
-void printGraph(Graph* graph) {
-	
-}
-
-
-// TODO: Implement adjListDelete()
+// TODO: Implement deleteGraph() to free used memory.
 void deleteGraph(Graph** graph) {
-  
+	return;
 }
 
 
-// TODO: Return the appropriate error code.
 /**
  * Constructs a graph given adjacency list information from a file.
  */
 int constructGraph(char* filename, Graph* graph) {
+	
 	FILE* fp;
 	int numVertices;
 	int i;
@@ -119,8 +111,7 @@ int constructGraph(char* filename, Graph* graph) {
 
 	fp = fopen(filename, "r");
 	if (fp == NULL) {
-		printf("File not found!\n");
-		return -1; // TODO: change this to an error code
+		return -1; // unsuccessful
 	}
 
 	/* iterate through each vertex of the undirected graph */
@@ -129,7 +120,7 @@ int constructGraph(char* filename, Graph* graph) {
 	for (i = 0; i < numVertices; i++) {
 		// ### printf("i = %d\n", i);
 		fscanf(fp, "%s", currentVertexID);
-		// ### printf("Vertex id = %s", currentVertexID);
+		// ### printf("Vertex ID = %s", currentVertexID);
 		currentAdjList = createAdjList(currentVertexID);
 
 		/* iterate through each neighbor of the current vertex */
@@ -139,14 +130,23 @@ int constructGraph(char* filename, Graph* graph) {
             if (!hasReachedEnd) {
 				addNodeToAdjList(currentAdjList, neighborVertexID);
             }
-			// ### printf("Here!!");
 		} while (!hasReachedEnd);
-		// ### printf("Here 1\n");
 		addAdjListToGraph(graph, currentAdjList);
-		// ### printf("Here 3\n");
 	}
 
-  // TODO: return a success code
+  return 0; // successful
+}
+
+
+/**
+ * Prints graph vertex information to the provided file pointer.
+ */
+void printVertexInfoToGraph(FILE* fp, Graph* graph) {
+	AdjList* currVertex = graph->firstAdjList;
+    while (currVertex != NULL) {
+        fprintf(fp, "\n%-15s%d", currVertex->vertexID, currVertex->degree);
+        currVertex = currVertex->nextAdjList;
+    }
 }
 
 
@@ -160,7 +160,7 @@ AdjList* getAdjList(Graph* graph, char* vertexID) {
 	bool hasFoundAdjList = false;
 
 	while (currAdjList != NULL && !hasFoundAdjList) {
-		if (strcmp(currAdjList->vertexID, vertexID) == 0) {
+		if (insensitiveStrCmp(currAdjList->vertexID, vertexID)) {
 			adjList = currAdjList;
 			hasFoundAdjList = true;
 		}
@@ -171,16 +171,36 @@ AdjList* getAdjList(Graph* graph, char* vertexID) {
 
 
 /**
- * Determines whether a particular vertex (i.e., adjacency list) of a graph has been explored.
+ * Determines whether a particular vertex exists in a graph.
  */
-int isVertexExplored(Graph* graph, char* vertexID) {
+bool doesVertexExist(Graph* graph, char* vertexID) {
 
 	AdjList* currVertex = graph->firstAdjList;
 	bool hasFoundVertex = false;
-	int hasBeenExplored = -1;
 
 	while (currVertex != NULL && !hasFoundVertex) {
-		if (strcmp(currVertex->vertexID, vertexID) == 0) {
+		if (insensitiveStrCmp(currVertex->vertexID, vertexID) == 0) {
+			hasFoundVertex = true;
+		} else {
+			currVertex = currVertex->nextAdjList;
+		}
+	}
+
+	return hasFoundVertex;
+}
+
+
+/**
+ * Determines whether a particular vertex (i.e., adjacency list) of a graph has been explored.
+ */
+bool isVertexExplored(Graph* graph, char* vertexID) {
+
+	AdjList* currVertex = graph->firstAdjList;
+	bool hasFoundVertex = false;
+	bool hasBeenExplored = false;
+
+	while (currVertex != NULL && !hasFoundVertex) {
+		if (insensitiveStrCmp(currVertex->vertexID, vertexID)) {
 			hasBeenExplored = currVertex->hasBeenExplored;
 			hasFoundVertex = true;
 		} else {
@@ -201,7 +221,7 @@ int setVertexToExplored(Graph* graph, char* vertexID) {
 	bool hasFoundVertex = false;
 
 	while (currVertex != NULL && !hasFoundVertex) {
-		if (strcmp(currVertex->vertexID, vertexID) == 0) {
+		if (insensitiveStrCmp(currVertex->vertexID, vertexID)) {
 			currVertex->hasBeenExplored = true;
 			hasFoundVertex = true;
 		} else {
@@ -209,9 +229,10 @@ int setVertexToExplored(Graph* graph, char* vertexID) {
 		}
 	}
 
-	if (hasFoundVertex)
+	if (hasFoundVertex) {
 		return 0;
-	return 1;
+	}
+	return -1;
 }
 
 

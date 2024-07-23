@@ -1,9 +1,15 @@
 
-Bruce          1
-Clark          2
-Diana          3
-Hal            2
+Acheron        4
+BlackSwan      3
+Bronya         3
+FuXuan         3
+RuanMei        3
+SilverWolf     2
+Sparkle        3
+Topaz          7
+Zundamon       2
+Metan          2
 
-Bruce Diana Clark Hal 
+Topaz Acheron BlackSwan Bronya FuXuan RuanMei SilverWolf Sparkle Zundamon Metan 
 
-Bruce Diana Hal Clark 
+Topaz Acheron Zundamon Metan BlackSwan Bronya FuXuan RuanMei SilverWolf Sparkle 
