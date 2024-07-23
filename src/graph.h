@@ -1,7 +1,6 @@
 #ifndef _GRAPH_H_
 #define _GRAPH_H_
 
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,13 +14,17 @@ typedef char String63[64];
 typedef char String127[128];
 typedef char String255[256];
 
-
+/**
+ * Corresponds to a node of an adjacency list data structure, i.e., a neighbor of a particular vertex.
+ */
 typedef struct AdjacencyListNodeTag {
 	String15 vertexID;
 	struct AdjacencyListNodeTag* nextNode;
 } AdjListNode;
 
-
+/**
+ * Corresponds to an adjacency list data structure containing a vertex and its neighbors.
+ */
 typedef struct AdjacencyListTag {
 	String15 vertexID;
 	int degree;
@@ -31,14 +34,20 @@ typedef struct AdjacencyListTag {
 	struct AdjacencyListTag* nextAdjList;
 } AdjList;
 
-
+/**
+ * Corresponds to a graph data structure containing adjacency list information.
+ */
 typedef struct GraphTag {
-	int vertices;
+	int numVertices;
 	AdjList* firstAdjList;
 	AdjList* lastAdjList;
 } Graph;
 
-
+/**
+ * Creates an adjacency list node given a vertex ID.
+ * @param vertexID - ID of the vertex of the node
+ * @return - a pointer to the newly created adjacency list node
+ */
 AdjListNode* createAdjListNode(String15 vertexID) {
 	AdjListNode* newNode = (AdjListNode*) malloc(sizeof(AdjListNode));
 	strcpy(newNode->vertexID, vertexID);
@@ -46,7 +55,11 @@ AdjListNode* createAdjListNode(String15 vertexID) {
 	return newNode;
 }
 
-
+/**
+ * Creates an adjacency list given a vertex ID.
+ * @param vertexID - ID of the vertex of the adjacency list
+ * @return - a pointer to the newly created adjacency list
+ */
 AdjList* createAdjList(char* vertexID) {
 	AdjList* newAdjList = (AdjList*) malloc(sizeof(AdjList));
 	strcpy(newAdjList->vertexID, vertexID);
@@ -58,16 +71,23 @@ AdjList* createAdjList(char* vertexID) {
 	return newAdjList;
 }
 
-
+/**
+ * Creates a graph.
+ * @return - a pointer to the newly created graph
+ */
 Graph* createGraph() {
 	Graph* newGraph = (Graph*) malloc(sizeof(Graph));
-	newGraph->vertices = 0;
+	newGraph->numVertices = 0;
 	newGraph->firstAdjList = NULL;
 	newGraph->lastAdjList = NULL;
 	return newGraph;
 }
 
-
+/**
+ * Adds a node to an adjacency list.
+ * @param adjList - pointer to the adjacency list being added to
+ * @param vertexID - ID of the vertex being added into the adjacency list
+ */
 void addNodeToAdjList(AdjList* adjList, String15 vertexID) {
 	AdjListNode* newNode = createAdjListNode(vertexID);
 	if (adjList->firstNeighbor == NULL && adjList->lastNeighbor == NULL) { // empty adjacency list
@@ -78,9 +98,13 @@ void addNodeToAdjList(AdjList* adjList, String15 vertexID) {
 	++adjList->degree;
 }
 
-
+/**
+ * Adds an adjacency list to a graph.
+ * @param graph - pointer to the graph being added to
+ * @param adjList - pointer to the adjacency list being added into the graph
+ */
 void addAdjListToGraph(Graph* graph, AdjList* adjList) {
-	++graph->vertices;
+	++graph->numVertices;
 	if (graph->firstAdjList == NULL && graph->lastAdjList == NULL) { // empty graph
 		graph->firstAdjList = graph->lastAdjList = adjList;
 	} else { // nonempty graph
@@ -89,7 +113,11 @@ void addAdjListToGraph(Graph* graph, AdjList* adjList) {
 }
 
 
-// TODO: Implement deleteGraph() to free used memory.
+// TODO: Implement deleteGraph() to free allocated memory.
+/**
+ * Frees up memory allocated to a graph.
+ * @param graph - pointer to a pointer to a graph
+ */
 void deleteGraph(Graph** graph) {
 	return;
 }
@@ -97,6 +125,9 @@ void deleteGraph(Graph** graph) {
 
 /**
  * Constructs a graph given adjacency list information from a file.
+ * @param filename - string name of the file containing adjacency list information
+ * @param graph - pointer to a graph
+ * @return 0 if successful; 1 if unsuccessful
  */
 int constructGraph(char* filename, Graph* graph) {
 	
@@ -116,11 +147,9 @@ int constructGraph(char* filename, Graph* graph) {
 
 	/* iterate through each vertex of the undirected graph */
 	fscanf(fp, "%d", &numVertices);
-	// ### printf("Vertices: %d\n", numVertices);
 	for (i = 0; i < numVertices; i++) {
-		// ### printf("i = %d\n", i);
+		
 		fscanf(fp, "%s", currentVertexID);
-		// ### printf("Vertex ID = %s", currentVertexID);
 		currentAdjList = createAdjList(currentVertexID);
 
 		/* iterate through each neighbor of the current vertex */
@@ -139,12 +168,14 @@ int constructGraph(char* filename, Graph* graph) {
 
 
 /**
- * Prints graph vertex information to the provided file pointer.
+ * Prints graph vertex information to a file.
+ * @param fp - pointer to the file being printed to
+ * @param graph - pointer to the graph containing the vertex information
  */
-void printVertexInfoToGraph(FILE* fp, Graph* graph) {
+void printGraphVertexInfoToFile(FILE* fp, Graph* graph) {
 	AdjList* currVertex = graph->firstAdjList;
     while (currVertex != NULL) {
-        fprintf(fp, "\n%-15s%d", currVertex->vertexID, currVertex->degree);
+        fprintf(fp, "\n%s%-15s%d%s", F_CYAN, currVertex->vertexID, currVertex->degree, F_NORMAL);
         currVertex = currVertex->nextAdjList;
     }
 }
@@ -152,6 +183,9 @@ void printVertexInfoToGraph(FILE* fp, Graph* graph) {
 
 /**
  * Gets an adjacency list from a graph given a vertex ID.
+ * @param graph - pointer to a graph
+ * @param vertexID - string name of the vertexID
+ * @return a pointer to the adjacency list if the vertex ID exists; NULL if nonexistent
  */
 AdjList* getAdjList(Graph* graph, char* vertexID) {
 
@@ -171,7 +205,10 @@ AdjList* getAdjList(Graph* graph, char* vertexID) {
 
 
 /**
- * Determines whether a particular vertex exists in a graph.
+ * Determines whether a vertex exists in a graph.
+ * @param graph - pointer to the graph being checked
+ * @param vertexID - string ID of the vertex
+ * @return true if the vertex is found; false, otherwise
  */
 bool doesVertexExist(Graph* graph, char* vertexID) {
 
@@ -192,6 +229,9 @@ bool doesVertexExist(Graph* graph, char* vertexID) {
 
 /**
  * Determines whether a particular vertex (i.e., adjacency list) of a graph has been explored.
+ * @param graph - pointer to the graph being checked
+ * @param vertexID - string ID of the vertex being checked
+ * @return true if the vertex has been explored; false, otherwise
  */
 bool isVertexExplored(Graph* graph, char* vertexID) {
 
@@ -214,6 +254,9 @@ bool isVertexExplored(Graph* graph, char* vertexID) {
 
 /**
  * Sets the hasBeenExplored attribute of a particular vertex (i.e., adjacency list) of a graph to true.
+ * @param graph - pointer to the graph containing the vertex
+ * @param vertexID - string ID of the vertex
+ * @return 0 if the vertex is found; -1 if not
  */
 int setVertexToExplored(Graph* graph, char* vertexID) {
 
@@ -238,14 +281,14 @@ int setVertexToExplored(Graph* graph, char* vertexID) {
 
 /**
  * Sets the hasBeenExplored attribute of all vertices (i.e., adjacency list) of a graph to false.
+ * @param graph - pointer to the graph being modified
  */
-int setGraphToUnexplored(Graph* graph) {
+void setGraphToUnexplored(Graph* graph) {
 	AdjList* currVertex = graph->firstAdjList;
 	while (currVertex != NULL) {
 		currVertex->hasBeenExplored = false;
 		currVertex = currVertex->nextAdjList;
 	}
-	return 1;
 }
 
 

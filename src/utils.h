@@ -65,7 +65,7 @@ bool insensitiveStrCmp(char* str1, char* str2) {
 }
 
 /**
- * Prints an array.
+ * Prints an array of strings.
  */
 void printArr(String31 arr[], int numElements, char message[]) {
   printf("%s\n", message);
@@ -92,7 +92,7 @@ void sortArr(String31 arr[], int numElements, bool sortInIncreasingOrder) {
   
   int i, j;
 
-  printArr(arr, numElements, "Pre-sort:"); // testing
+  // printArr(arr, numElements, "Pre-sort:");
 
   if (sortInIncreasingOrder) { // increasing lexicographical order
     for (i = 0; i < numElements - 1; ++i) {
@@ -112,7 +112,7 @@ void sortArr(String31 arr[], int numElements, bool sortInIncreasingOrder) {
     }
   }
 
-  printArr(arr, numElements, "Post-sort:"); // testing
+  // printArr(arr, numElements, "Post-sort:");
 }
 
 #if DEBUG 
