@@ -75,6 +75,7 @@
 	const lineNameIds = [ "Acheron_BlackSwan", "Acheron_Sparkle", "Acheron_Topaz", "Acheron_Zundamon", "BlackSwan_Sparkle", "BlackSwan_Topaz", "Bronya_FuXuan", "Bronya_RuanMei", "Bronya_Topaz", "RuanMei_Topaz", "RuanMei_Metan", "SilverWolf_FuXuan", "SilverWolf_Topaz", "Sparkle_Topaz", "Topaz_FuXuan", "Zundamon_Metan"]
 	const pointNameIds = [ "Acheron", "BlackSwan", "Bronya", "FuXuan", "RuanMei", "SilverWolf", "Sparkle", "Topaz", "Zundamon", "Metan"]
 	const textNames = [ "TextAcheron", "TextBlackSwan", "TextBronya", "TextFuXuan", "TextRuanMei", "TextSilverWolf", "TextSparkle", "TextTopaz", "TextZundamon", "TextMetan"]
+	
 	    lineObjs = [];
 		initialObjPosX = [];
 		initialObjSpeedX = [];
@@ -88,51 +89,68 @@
 		pointNameIds.forEach((n) => initialObjSpeedX.push(0.0));
 		pointNameIds.forEach((n) => initialObjSpeedY.push(0.0));
 		
-		const k_spring = 0.4;
-	    const k_repulse = 1;
-		const m = 1.5;
-		const mu = 2;
-		const dt = 0.01;
+		
+		const m = 10;
+		const mu = 10;
+		const k_spring = 1.3*mu;
+	    const k_repulse = -3.3*mu;
+		const dt = 0.001;
 		const restDistance = 300;
 		
+		const atan3 = (x, y) => {
+			if (x >= 0){
+				return Math.atan(y/x);
+			} else if (x * y <= 0){
+				return Math.atan(y/x) + Math.PI;
+			} else if (x < 0){
+				return Math.atan(y/x) - Math.PI;
+			}
+		}
+	
+		const calculateSpringForce = (name, fromX, toSpringXs, fromY, toSpringYs, isXcoordinate) => {
+			displacementForces = [];
+		    toSpringXs.forEach((toX, i) => {
+				displacement = 0;
+				toY = toSpringYs[i];
+	
+				offsetY = toY-fromY;
+				offsetX = toX-fromX;
+	
+				radians = Math.atan2(offsetY, offsetX);
+	
+				actualRestDistance = restDistance * (isXcoordinate ? Math.cos(radians) : Math.sin(radians));
+				
+				displacement = (fromX  - toX + actualRestDistance)
+	
+				console.log(name + " Offset: (" + Math.round(offsetX) + ", " + Math.round(offsetY) , ") " + " Dis: " + Math.round(actualRestDistance) + " Deg: "+ radians*180/Math.PI + " Displacement" + displacement)
+				displacementForces.push(displacement);
+		    })
+			
+			return displacementForces.reduce((partialSumForce, otherForce) => partialSumForce + otherForce, 0)*-1;
+		}
+	
 		const calculateAcceleration = (fromX, speedX, toXs, isXcoordinate, fromY, toSpringY, repXs, repY) => {
-		    displacementForces = [];
+		    
 	        repulsionForces = [];
 		    console.log("From: " + Math.abs(fromX), " To's: " +toXs)
 			displacement = 0;
 			repulsionForce = 0;
-			// Springs
-		    toXs.forEach((toX, i) => {
-				otherLateralPosition = toSpringY[i];
-				displacement = 0;
-				offsetY = otherLateralPosition-fromY;
-				offsetX = toX-fromX;
-				degrees = Math.atan2(isXcoordinate ? offsetY : offsetX, isXcoordinate ? offsetX : offsetY)
-				actualRestDistance = restDistance * (isXcoordinate ? Math.cos(degrees): Math.sin(degrees))
-				console.log("Dis: "+restDistance, "Displacement: " + actualRestDistance, "Deg: "+ degrees * 180 / Math.PI)
-				
-				if (fromX != toX) {
-					displacement = (Math.abs(fromX  - toX) - restDistance)*Math.sign(fromX  - toX) *-1
-				} else {
-					displacement = 0;
-				}
-	
-				displacementForces.push(displacement);
-		    })
+			
 			repulsion = 0;
 	        // //Repulsion
 	        repXs.forEach((repX, i)=>{
 	            repulsion = 0;
 				offsetY = repY[i]-fromY;
 				offsetX = repX-fromX;
-				r = Math.sqrt(repY[i]**2 +  repX**2)
-				degrees = Math.atan2(isXcoordinate ? offsetY : offsetX, isXcoordinate ? offsetX : offsetY)
+				r = Math.sqrt(offsetX**2 +  offsetY**2)
+				radians = Math.atan2(offsetY, offsetX);
 	            
 	            
 	            if (offsetX === 0){
-	                repulsion = 0;
+	            	repulsion = 1;
 	            } else {
-	               repulsion = repX *100 / r**2
+	            	repulsion = k_repulse*-1*offsetX / (r)
+	
 	            }
 	
 	            repulsionForces.push(repulsion);
@@ -140,11 +158,11 @@
 	
 	
 		    
-		    springForce = displacementForces.reduce((partialSumForce, otherForce) => partialSumForce + otherForce, 0); 
+		    springForce =  calculateSpringForce("Node: ", fromX, toXs, fromY, toSpringY, isXcoordinate);
 	        repulsionForce = repulsionForces.reduce((partialSumForce, otherForce) => partialSumForce + otherForce, 0); 
-		    console.log(springForce, k_repulse*repulsionForce)
-			console.log(((k_spring*springForce) + k_repulse*repulsionForce + -1*mu*speedX)/m)
-			return ((k_spring*springForce) + k_repulse*repulsionForce + (Math.random()-1)*300 + -1*mu*speedX)/m;
+		    console.log("Spring Force: " + springForce)
+			console.log("Acceleation: " + ((k_spring*springForce) + k_repulse*repulsionForce + -1*mu*speedX)/m)
+			return ((k_spring*springForce) + k_repulse*repulsionForce + mu*2*(Math.random()*2 - 1) + -1*mu*speedX)/m;
 		}
 		
 		
@@ -160,16 +178,22 @@
 		var newAccelerationX, newAccelerationY;
 		var newPosX, newPosY;
 		var newSpeedX, newSpeedY;
+		var initObjPosX = []
+		var initObjPosY = []
 		initialObjPosX.forEach((pointObj, i) =>{
 		    oldPositionsX.push((pointObj.getAttribute("x")));
+			initObjPosX.push(pointObj.getAttribute("x"));
 		})
 		initialObjPosX.forEach((pointObj, i) =>{
 		    oldPositionsY.push((pointObj.getAttribute("y")));
+			initObjPosY.push(pointObj.getAttribute("y"));
 		})
 		var newPositionsX = [...oldPositionsX];
 		var newPositionsY = [...oldPositionsY];
 	
 		let otherPointindex, connections, conntected;
+		
+		const restPoint = 300; 
 		function animate() {
 			console.clear()
 		    springPointsX = [];
@@ -188,8 +212,8 @@
 		    oldPositionsX.forEach((oldPosX, i) =>{
 				oldPosY = oldPositionsY[i];
 		        parent = pointNameIds[i];
-		        springPointsX = [300];
-				springPointsY = [300];
+		        springPointsX = [restPoint];
+				springPointsY = [restPoint];
 		        conntected = []
 		        
 		        lineNameIds.forEach((name) => {
@@ -209,14 +233,15 @@
 		            }
 		        })
 	            
-	            
+				repX = [restPoint,...oldPositionsX];
+				repY = [restPoint,...oldPositionsY];
 	
-		        newAccelerationX = calculateAcceleration(+oldPosX, +oldVelocitiesX[i], springPointsX, true, +oldPosY, springPointsY, oldPositionsX, oldPositionsY);
+		        newAccelerationX = calculateAcceleration(+oldPosX, +oldVelocitiesX[i], springPointsX, true, +oldPosY, springPointsY, repX, repY);
 		        newPosX = +oldPosX + (+oldVelocitiesX[i] * dt);
 		        newSpeedX = (+oldVelocitiesX[i] + newAccelerationX * dt);
 		        newSpeedX = Math.abs(newSpeedX) > 0.00001 ? newSpeedX : 0;
 	
-				newAccelerationY = calculateAcceleration(+oldPosY, +oldVelocitiesY[i], springPointsY, false, +oldPosX, springPointsX,  oldPositionsX, oldPositionsY);
+				newAccelerationY = calculateAcceleration(+oldPosY, +oldVelocitiesY[i], springPointsY, false, +oldPosX, springPointsX,  repX, repY);
 		        newPosY = +oldPosY + (+oldVelocitiesY[i] * dt);
 		        newSpeedY = (+oldVelocitiesY[i] + newAccelerationY * dt);
 		        newSpeedY = Math.abs(newSpeedY) > 0.00001 ? newSpeedY : 0;
@@ -230,7 +255,6 @@
 				newPositionsY[i] = (newPosY);
 		        newVelocitiesY[i] = newSpeedY;
 		    })
-		
 		    
 		
 		    initialObjPosX.forEach((pointObj, i) => {
@@ -267,11 +291,35 @@
 		}
 		
 		function stopAnimation() {
-		    if(t != null) {
+		    if (t != null) {
 		        clearInterval(t);
 		        t = null;
+	
+				
+	
+				initialObjPosX.forEach((pointObj, i) => {
+					pointObj.setAttribute("x", initObjPosX[i]);
+					pointObj.setAttribute("y", initObjPosY[i]);
+				})
+	
+				
+	
+				lineNameIds.forEach((name, i) => {
+					connections = name.split("_");
+					lineObjs[i].setAttribute("x1", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[0])])+30);
+					lineObjs[i].setAttribute("x2", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[1])])+30);
+					lineObjs[i].setAttribute("y1", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[0])])+40);
+					lineObjs[i].setAttribute("y2", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[1])])+40);
+				})
+	
+				TextObjs.forEach((textObj, i) => {
+					textObj.setAttribute("x", +initObjPosX[i]+30);
+					textObj.setAttribute("y", +initObjPosY[i]+40);
+				})
+				
 		    }
 		}
+	
 	(null)</script>
 	</body>
 </html>

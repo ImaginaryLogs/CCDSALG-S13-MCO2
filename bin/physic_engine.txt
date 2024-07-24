@@ -217,28 +217,6 @@
 	    if (t != null) {
 	        clearInterval(t);
 	        t = null;
-
-			
-
-			initialObjPosX.forEach((pointObj, i) => {
-				pointObj.setAttribute("x", initObjPosX[i]);
-				pointObj.setAttribute("y", initObjPosY[i]);
-			})
-
-			
-
-			lineNameIds.forEach((name, i) => {
-				connections = name.split("_");
-				lineObjs[i].setAttribute("x1", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[0])])+30);
-				lineObjs[i].setAttribute("x2", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[1])])+30);
-				lineObjs[i].setAttribute("y1", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[0])])+40);
-				lineObjs[i].setAttribute("y2", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[1])])+40);
-			})
-
-			TextObjs.forEach((textObj, i) => {
-				textObj.setAttribute("x", +initObjPosX[i]+30);
-				textObj.setAttribute("y", +initObjPosY[i]+40);
-			})
 			
 	    }
 	}
