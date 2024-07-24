@@ -150,7 +150,6 @@ char *drawSVGLineFromCenterToCenter(char *buffer, int n, dimension size1, positi
     return drawSVGLine(buffer, n, center1, center2);
 }
 
-
 char *drawSVGLineID(char *buffer, int n, position startPoint, position endPoint, char *lineID){
     const String63 CONST_RECT_TAGS[6] = {
         "<line x1=\"",
@@ -198,7 +197,6 @@ char *drawSVGLineID(char *buffer, int n, position startPoint, position endPoint,
     return buffer;
 }
 
-
 char *drawSVGLineFromCenterToCenterId(char *buffer, int n, dimension size1, position pos1, char *pointName1, dimension size2, position pos2, char *pointName2){
     String63 name = "";
     position center1, center2;
@@ -225,13 +223,11 @@ char *drawSVGText(char *buffer, int n, position pos, char *strText){
     return buffer;
 }
 
-
 char *drawSVGTextOnRectCenter(char *buffer, int n, dimension size, position pos, char *strText){
     pos.x += (size.width - (FONTSIZE*((int) strlen(strText) - 1)) / 2) / 2;
     pos.y += (FONTSIZE/2 + size.height) / 2;
     return drawSVGText(buffer, n, pos, strText);
 }
-
 
 position computeNthPolygonPosition(position input, int radius, int order, int nSides){
     input.x = (int) roundl(radius * cos(2.0l*PI*order/nSides));
@@ -332,17 +328,16 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size, Queue *lineNames, 
 }
 
 void createHTMLGraphic(Graph *graph){
-    signal(SIGSEGV, detectCrash);
     const String31 OUTPUT_GUI_FILENAME = "GuiGraph.html";
     const String127 CONST_HTML_TAGS[11] = {
         "<!DOCTYPE html>\n\t<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\">",
         "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
         "\t\t<title>GUI</title>\n\t</head>\n\n\t<body>",
+        "\t<input type=\"button\" value=\"Start\" onclick=\"startAnimation()\"/>",
+	    "\t<input type=\"button\" value=\"Step\" onclick=\"stepAnimation()\" />",
+	    "\t<input type=\"button\" value=\"Stop\" onclick=\"stopAnimation()\" />",
         "\t<h1>OUTPUT:</h1>",
         "\t</svg>\n",
-        "<input type=\"button\" value=\"Start\" onclick=\"startAnimation()\"/>",
-	    "<input type=\"button\" value=\"Step\" onclick=\"stepAnimation()\" />",
-	    "<input type=\"button\" value=\"Stop\" onclick=\"stopAnimation()\" />",
         "<script>",
         "</script>",
         "\t</body>\n</html>",
@@ -350,7 +345,7 @@ void createHTMLGraphic(Graph *graph){
     FILE *fp = fopen(OUTPUT_GUI_FILENAME, "w");
     
     int nWrittenTags = 0;
-    for (nWrittenTags = 0; nWrittenTags < 4; nWrittenTags++){
+    for (nWrittenTags = 0; nWrittenTags < 7; nWrittenTags++){
         fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
     }
 
@@ -360,8 +355,8 @@ void createHTMLGraphic(Graph *graph){
         "\">"
     };
 
-    int side = 1000;
-    fprintf(fp, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side, CONST_SVG_TAGS[1], side, CONST_SVG_TAGS[2]);
+    int side = 500;
+    fprintf(fp, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*10, CONST_SVG_TAGS[1], side*10, CONST_SVG_TAGS[2]);
 
     // fprintf(fp, "%s\n", drawSVGRect(strBufferSVG, 255, p, e));
     Queue *lineNames = createQueue();
@@ -369,11 +364,11 @@ void createHTMLGraphic(Graph *graph){
     Queue *textNames = createQueue();
     createCircleGraph(fp, graph, side, lineNames, pointNames);
 
-    for (nWrittenTags = 4; nWrittenTags < 9; nWrittenTags++){
+    for (nWrittenTags = 7; nWrittenTags < 9; nWrittenTags++){
         fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
     }
 
-    FILE *fp2 = fopen("pe.txt", "r");
+    FILE *fp2 = fopen("physic_engine.txt", "r");
     String255 buffer = "";
 
     fprintf(fp, "\tconst lineNameIds = [ \"%s\"", dequeue(lineNames, buffer));
@@ -408,10 +403,7 @@ void createHTMLGraphic(Graph *graph){
         fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
     }
 
-
     fclose(fp);
 }
-
-
 
 #endif
