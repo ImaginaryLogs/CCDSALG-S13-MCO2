@@ -120,7 +120,12 @@ void sortArr(String31 arr[], int numElements, bool sortInIncreasingOrder) {
   * A developer's version of printf that is togglable - useful for debugging. 
   * @retval None
   */
-  #define LOG(X, ...) do{typeof (X) _X = (X); if (_X) fprintf(stdout, __VA_ARGS__);} while(0)
+  #define LOG(X, ...) \
+    do {\
+      typeof (X) _X = (X); \
+      if (_X) \
+        fprintf(stdout, __VA_ARGS__); } \
+    while(0)
 #else
   #define LOG(X, ...)
 #endif

@@ -5,15 +5,17 @@
 #include "queue.h"
 #include "stack.h"
 #include "traversal.h"
-// #include "gui.h"
+#include "gui.h"
+
+#define TEST_INPUT_FILENAME "GRAPH2.txt"
 
 // #define TEST_INPUT_FILENAME "..\\graphs\\GRAPH2.txt" // testing
 
 int main() {
     
     // program variables
-    String31 directory = "..\\graphs\\";
-    String31 filename;
+    // String31 directory = "..\\graphs\\";
+    // String31 filename;
     int errorCode;
 
     AdjList* currVertex;
@@ -46,15 +48,16 @@ int main() {
     printf("%sInput starting vertex for the traversal: %s", F_NORMAL, F_CYAN);
     scanf(" %s", startingVertexID);
 
-    /* execute the two traversal methods and produce the output files */
-    errorCode = breadthFirstSearch(graph, startingVertexID);
-    if (errorCode == 0) {
-        depthFirstSearch(graph, startingVertexID);
-        // createHTMLGraphic(graph);
-    }
-    
-    /* final executions */
-    printf("%s", F_NORMAL);
+    /* execute the chosen traversal method and produce the output file */
+    breadthFirstSearch(graph, startingVertexID);
+    printf("Finished BFS!\n");
+    depthFirstSearch(graph, startingVertexID);
+    printf("Finished DFS!\n");
+    inorderTraversal(graph, startingVertexID);
+    printf("Finished Calculating BFS Tree positions!\n");
+    createHTMLGraphic(graph);
+    printf("Finished Printing Graph!\n");
+    printf("Reached end of program!\n");
     deleteGraph(&graph);
     return 0;
 }

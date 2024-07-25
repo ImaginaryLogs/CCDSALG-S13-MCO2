@@ -140,4 +140,27 @@ char *queueToString(Queue *q, char *queueExpect, int size, int hasColor) {
 	return queueExpect;
 }
 
+int queueSearch(Queue *q, char *key){
+	int index = -1, result = -1;
+	bool hasFound = false;
+	qNode *current;
+	if (q != NULL && q->pQHead != NULL){
+		current = q->pQHead;
+		if (strcmp(key, current->data) == 0) {
+			index = 0;
+			result = 0;
+		} else 
+		while (current->pNext != NULL && q->pQHead != current->pNext && !hasFound){
+			++index;
+			current = current->pNext;
+			if (strcmp(key, current->data) == 0){
+				hasFound = true;
+				result = index;
+			}
+		}
+
+	}
+	return result;
+}
+
 #endif

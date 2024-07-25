@@ -29,8 +29,8 @@ run: $(BIN_DIR)/main.exe
 	@echo ""
 	@echo "Running Graphing Program..."
 	@echo ""
-	cd bin; \
-		./main
+	cd $(BIN_DIR); \
+		./main.exe
 
 test:
 	@echo "\nBuilding\n"

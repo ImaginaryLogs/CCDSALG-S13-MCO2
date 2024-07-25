@@ -7,25 +7,350 @@
 	</head>
 
 	<body>
-	<h1>OUTPUT:</h1>
-	<svg width="500" height="500">
-
-	<line x1="440" y1="230" x2="40" y2="230" style="stroke:black;stroke-width:5"/>
-	<line x1="240" y1="430" x2="40" y2="230" style="stroke:black;stroke-width:5"/>
-	<line x1="240" y1="430" x2="240" y2="30" style="stroke:black;stroke-width:5"/>
-	<line x1="40" y1="230" x2="440" y2="230" style="stroke:black;stroke-width:5"/>
-	<line x1="40" y1="230" x2="240" y2="430" style="stroke:black;stroke-width:5"/>
-	<line x1="40" y1="230" x2="240" y2="30" style="stroke:black;stroke-width:5"/>
-	<line x1="240" y1="30" x2="240" y2="430" style="stroke:black;stroke-width:5"/>
-	<line x1="240" y1="30" x2="40" y2="230" style="stroke:black;stroke-width:5"/>
-	<rect width="80" height="60" x="400" y="200" fill="yellow"/>
-	<text x="428" y="233" fill="black" font-size="12">Bruce</text>
-	<rect width="80" height="60" x="200" y="400" fill="yellow"/>
-	<text x="228" y="433" fill="black" font-size="12">Clark</text>
-	<rect width="80" height="60" x="0" y="200" fill="yellow"/>
-	<text x="28" y="233" fill="black" font-size="12">Diana</text>
-	<rect width="80" height="60" x="200" y="0" fill="yellow"/>
-	<text x="234" y="33" fill="black" font-size="12">Hal</text>
+	<h1>1 BFS TREE:</h1>
+	<svg width="2500" height="1000">
+	<line x1="120" y1="90" x2="40" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="280" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="440" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="600" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="680" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="200" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="360" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="760" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="600" y1="290" x2="520" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<g>
+		<rect width="80" height="60" x="80" y="60" id="Acheron " rx="10" ry="10" fill="orange"/>
+		<text id="TextAcheron "x="99" y="93" fill="black" font-size="12">Acheron </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="0" y="160" id="BlackSwan " rx="10" ry="10" fill="orange"/>
+		<text id="TextBlackSwan "x="13" y="193" fill="black" font-size="12">BlackSwan </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="240" y="260" id="Bronya " rx="10" ry="10" fill="orange"/>
+		<text id="TextBronya "x="262" y="293" fill="black" font-size="12">Bronya </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="400" y="260" id="FuXuan " rx="10" ry="10" fill="orange"/>
+		<text id="TextFuXuan "x="422" y="293" fill="black" font-size="12">FuXuan </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="560" y="260" id="RuanMei " rx="10" ry="10" fill="orange"/>
+		<text id="TextRuanMei "x="579" y="293" fill="black" font-size="12">RuanMei </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="640" y="260" id="SilverWolf " rx="10" ry="10" fill="orange"/>
+		<text id="TextSilverWolf "x="650" y="293" fill="black" font-size="12">SilverWolf </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="160" y="160" id="Sparkle " rx="10" ry="10" fill="orange"/>
+		<text id="TextSparkle "x="179" y="193" fill="black" font-size="12">Sparkle </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="320" y="160" id="Topaz " rx="10" ry="10" fill="orange"/>
+		<text id="TextTopaz "x="345" y="193" fill="black" font-size="12">Topaz </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="720" y="160" id="Zundamon " rx="10" ry="10" fill="orange"/>
+		<text id="TextZundamon "x="736" y="193" fill="black" font-size="12">Zundamon </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="480" y="260" id="Metan " rx="10" ry="10" fill="orange"/>
+		<text id="TextMetan "x="505" y="293" fill="black" font-size="12">Metan </text>
+	</g>
 	</svg>
+
+	<input type="button" value="Start" onclick="startAnimation()"/>
+	<input type="button" value="Step" onclick="stepAnimation()" />
+	<input type="button" value="Stop" onclick="stopAnimation()" />
+	<h1>2 GRAPH:</h1>
+	<svg width="5000" height="5000">
+
+	<line x1="460" y1="240" x2="420" y2="363" id="Acheron_BlackSwan" style="stroke:black;stroke-width:5"/>
+	<line x1="460" y1="240" x2="80" y2="117" id="Acheron_Sparkle" style="stroke:black;stroke-width:5"/>
+	<line x1="460" y1="240" x2="185" y2="40" id="Acheron_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="460" y1="240" x2="315" y2="40" id="Acheron_Zundamon" style="stroke:black;stroke-width:5"/>
+	<line x1="420" y1="363" x2="80" y2="117" id="BlackSwan_Sparkle" style="stroke:black;stroke-width:5"/>
+	<line x1="420" y1="363" x2="185" y2="40" id="BlackSwan_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="315" y1="440" x2="185" y2="440" id="Bronya_FuXuan" style="stroke:black;stroke-width:5"/>
+	<line x1="315" y1="440" x2="80" y2="363" id="Bronya_RuanMei" style="stroke:black;stroke-width:5"/>
+	<line x1="315" y1="440" x2="185" y2="40" id="Bronya_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="80" y1="363" x2="185" y2="40" id="RuanMei_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="80" y1="363" x2="420" y2="117" id="RuanMei_Metan" style="stroke:black;stroke-width:5"/>
+	<line x1="40" y1="240" x2="185" y2="440" id="SilverWolf_FuXuan" style="stroke:black;stroke-width:5"/>
+	<line x1="40" y1="240" x2="185" y2="40" id="SilverWolf_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="80" y1="117" x2="185" y2="40" id="Sparkle_Topaz" style="stroke:black;stroke-width:5"/>
+	<line x1="185" y1="40" x2="185" y2="440" id="Topaz_FuXuan" style="stroke:black;stroke-width:5"/>
+	<line x1="315" y1="40" x2="420" y2="117" id="Zundamon_Metan" style="stroke:black;stroke-width:5"/>
+	<g>
+		<rect width="80" height="60" x="420" y="210" id="Acheron" rx="10" ry="10" fill="orange"/>
+		<text id="TextAcheron"x="442" y="243" fill="black" font-size="12">Acheron</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="380" y="333" id="BlackSwan" rx="10" ry="10" fill="orange"/>
+		<text id="TextBlackSwan"x="396" y="366" fill="black" font-size="12">BlackSwan</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="275" y="410" id="Bronya" rx="10" ry="10" fill="orange"/>
+		<text id="TextBronya"x="300" y="443" fill="black" font-size="12">Bronya</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="145" y="410" id="FuXuan" rx="10" ry="10" fill="orange"/>
+		<text id="TextFuXuan"x="170" y="443" fill="black" font-size="12">FuXuan</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="40" y="333" id="RuanMei" rx="10" ry="10" fill="orange"/>
+		<text id="TextRuanMei"x="62" y="366" fill="black" font-size="12">RuanMei</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="0" y="210" id="SilverWolf" rx="10" ry="10" fill="orange"/>
+		<text id="TextSilverWolf"x="13" y="243" fill="black" font-size="12">SilverWolf</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="40" y="87" id="Sparkle" rx="10" ry="10" fill="orange"/>
+		<text id="TextSparkle"x="62" y="120" fill="black" font-size="12">Sparkle</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="145" y="10" id="Topaz" rx="10" ry="10" fill="orange"/>
+		<text id="TextTopaz"x="173" y="43" fill="black" font-size="12">Topaz</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="275" y="10" id="Zundamon" rx="10" ry="10" fill="orange"/>
+		<text id="TextZundamon"x="294" y="43" fill="black" font-size="12">Zundamon</text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="380" y="87" id="Metan" rx="10" ry="10" fill="orange"/>
+		<text id="TextMetan"x="408" y="120" fill="black" font-size="12">Metan</text>
+	</g>
+	</svg>
+
+<script>
+	const lineNameIds = [ "Acheron_BlackSwan", "Acheron_Sparkle", "Acheron_Topaz", "Acheron_Zundamon", "BlackSwan_Sparkle", "BlackSwan_Topaz", "Bronya_FuXuan", "Bronya_RuanMei", "Bronya_Topaz", "RuanMei_Topaz", "RuanMei_Metan", "SilverWolf_FuXuan", "SilverWolf_Topaz", "Sparkle_Topaz", "Topaz_FuXuan", "Zundamon_Metan"]
+	const pointNameIds = [ "Acheron", "BlackSwan", "Bronya", "FuXuan", "RuanMei", "SilverWolf", "Sparkle", "Topaz", "Zundamon", "Metan"]
+	const textNames = [ "TextAcheron", "TextBlackSwan", "TextBronya", "TextFuXuan", "TextRuanMei", "TextSilverWolf", "TextSparkle", "TextTopaz", "TextZundamon", "TextMetan"]
+	
+	    lineObjs = [];
+		initialObjPosX = [];
+		initialObjSpeedX = [];
+		TextObjs = [];
+		initialObjSpeedY = [];
+		
+		lineNameIds.forEach((n) => lineObjs.push(document.getElementById(n)));
+		pointNameIds.forEach((n) => initialObjPosX.push(document.getElementById(n)));
+		textNames.forEach((n) => TextObjs.push(document.getElementById(n)));
+		
+		pointNameIds.forEach((n) => initialObjSpeedX.push(0.0));
+		pointNameIds.forEach((n) => initialObjSpeedY.push(0.0));
+		
+		
+		const m = 10;
+		const mu = 10;
+		const k_spring = 1.3*mu;
+	    const k_repulse = -3.3*mu;
+		const dt = 0.001;
+		const restDistance = 300;
+		
+		const atan3 = (x, y) => {
+			if (x >= 0){
+				return Math.atan(y/x);
+			} else if (x * y <= 0){
+				return Math.atan(y/x) + Math.PI;
+			} else if (x < 0){
+				return Math.atan(y/x) - Math.PI;
+			}
+		}
+	
+		const calculateSpringForce = (name, fromX, toSpringXs, fromY, toSpringYs, isXcoordinate) => {
+			displacementForces = [];
+		    toSpringXs.forEach((toX, i) => {
+				displacement = 0;
+				toY = toSpringYs[i];
+	
+				offsetY = toY-fromY;
+				offsetX = toX-fromX;
+	
+				radians = Math.atan2(offsetY, offsetX);
+	
+				actualRestDistance = restDistance * (isXcoordinate ? Math.cos(radians) : Math.sin(radians));
+				
+				displacement = (fromX  - toX + actualRestDistance)
+	
+				console.log(name + " Offset: (" + Math.round(offsetX) + ", " + Math.round(offsetY) , ") " + " Dis: " + Math.round(actualRestDistance) + " Deg: "+ radians*180/Math.PI + " Displacement" + displacement)
+				displacementForces.push(displacement);
+		    })
+			
+			return displacementForces.reduce((partialSumForce, otherForce) => partialSumForce + otherForce, 0)*-1;
+		}
+	
+		const calculateAcceleration = (fromX, speedX, toXs, isXcoordinate, fromY, toSpringY, repXs, repY) => {
+		    
+	        repulsionForces = [];
+		    console.log("From: " + Math.abs(fromX), " To's: " +toXs)
+			displacement = 0;
+			repulsionForce = 0;
+			
+			repulsion = 0;
+	        // //Repulsion
+	        repXs.forEach((repX, i)=>{
+	            repulsion = 0;
+				offsetY = repY[i]-fromY;
+				offsetX = repX-fromX;
+				r = Math.sqrt(offsetX**2 +  offsetY**2)
+				radians = Math.atan2(offsetY, offsetX);
+	            
+	            
+	            if (offsetX === 0){
+	            	repulsion = 1;
+	            } else {
+	            	repulsion = k_repulse*-1*offsetX / (r)
+	
+	            }
+	
+	            repulsionForces.push(repulsion);
+	        })
+	
+	
+		    
+		    springForce =  calculateSpringForce("Node: ", fromX, toXs, fromY, toSpringY, isXcoordinate);
+	        repulsionForce = repulsionForces.reduce((partialSumForce, otherForce) => partialSumForce + otherForce, 0); 
+		    console.log("Spring Force: " + springForce)
+			console.log("Acceleation: " + ((k_spring*springForce) + k_repulse*repulsionForce + -1*mu*speedX)/m)
+			return ((k_spring*springForce) + k_repulse*repulsionForce + mu*2*(Math.random()*2 - 1) + -1*mu*speedX)/m;
+		}
+		
+		
+		var oldPositionsX = [];
+		var oldPositionsY = [];
+		var oldVelocitiesX = [...initialObjSpeedX];
+		var newVelocitiesX = [...initialObjSpeedX];
+		
+		var oldVelocitiesY = [...initialObjSpeedY];
+		var newVelocitiesY = [...initialObjSpeedY];
+		var springPointsX = [];
+	    var springPointsY = [];
+		var newAccelerationX, newAccelerationY;
+		var newPosX, newPosY;
+		var newSpeedX, newSpeedY;
+		var initObjPosX = []
+		var initObjPosY = []
+		initialObjPosX.forEach((pointObj, i) =>{
+		    oldPositionsX.push((pointObj.getAttribute("x")));
+			initObjPosX.push(pointObj.getAttribute("x"));
+		})
+		initialObjPosX.forEach((pointObj, i) =>{
+		    oldPositionsY.push((pointObj.getAttribute("y")));
+			initObjPosY.push(pointObj.getAttribute("y"));
+		})
+		var newPositionsX = [...oldPositionsX];
+		var newPositionsY = [...oldPositionsY];
+	
+		let otherPointindex, connections, conntected;
+		
+		const restPoint = 300; 
+		function animate() {
+			console.clear()
+		    springPointsX = [];
+		    springPointsY = [];
+	        
+		    oldVelocitiesX = [];
+		    oldPositionsX = [];
+		    oldVelocitiesY = [];
+		    oldPositionsY = [];
+	
+		    oldVelocitiesX = [...newVelocitiesX];
+		    oldPositionsX = [...newPositionsX];
+		    oldVelocitiesY = [...newVelocitiesY];
+		    oldPositionsY = [...newPositionsY];
+		
+		    oldPositionsX.forEach((oldPosX, i) =>{
+				oldPosY = oldPositionsY[i];
+		        parent = pointNameIds[i];
+		        springPointsX = [restPoint];
+				springPointsY = [restPoint];
+		        conntected = []
+		        
+		        lineNameIds.forEach((name) => {
+		            connections = []
+		            connections = name.split("_");
+		            
+		            if (connections[0] === parent) {
+		                otherPointindex = pointNameIds.findIndex((randomName)=> (randomName === connections[1]));
+		                conntected.push(pointNameIds[otherPointindex]);
+		                springPointsX.push(oldPositionsX[otherPointindex]);
+						springPointsY.push(oldPositionsY[otherPointindex]);
+		            } else if (connections[1] === parent) {
+		                otherPointindex = pointNameIds.findIndex((randomName)=> (randomName === connections[0]));
+		                conntected.push(pointNameIds[otherPointindex]);
+		                springPointsX.push(oldPositionsX[otherPointindex]);
+						springPointsY.push(oldPositionsY[otherPointindex]);
+		            }
+		        })
+	            
+				repX = [restPoint,...oldPositionsX];
+				repY = [restPoint,...oldPositionsY];
+	
+		        newAccelerationX = calculateAcceleration(+oldPosX, +oldVelocitiesX[i], springPointsX, true, +oldPosY, springPointsY, repX, repY);
+		        newPosX = +oldPosX + (+oldVelocitiesX[i] * dt);
+		        newSpeedX = (+oldVelocitiesX[i] + newAccelerationX * dt);
+		        newSpeedX = Math.abs(newSpeedX) > 0.00001 ? newSpeedX : 0;
+	
+				newAccelerationY = calculateAcceleration(+oldPosY, +oldVelocitiesY[i], springPointsY, false, +oldPosX, springPointsX,  repX, repY);
+		        newPosY = +oldPosY + (+oldVelocitiesY[i] * dt);
+		        newSpeedY = (+oldVelocitiesY[i] + newAccelerationY * dt);
+		        newSpeedY = Math.abs(newSpeedY) > 0.00001 ? newSpeedY : 0;
+		
+		
+		        console.log(parent,"AccX:", newAccelerationX, newAccelerationY);
+		        console.log(parent,"VelX:", oldVelocitiesX[i], newSpeedX, oldVelocitiesY[i], newSpeedY);
+		        console.log(parent,"PosX:", oldPosX, newPosX, oldPosY, newPosY);
+		        newPositionsX[i] = (newPosX);
+		        newVelocitiesX[i] = newSpeedX;
+				newPositionsY[i] = (newPosY);
+		        newVelocitiesY[i] = newSpeedY;
+		    })
+		    
+		
+		    initialObjPosX.forEach((pointObj, i) => {
+		        pointObj.setAttribute("x", Math.abs(newPositionsX[i]));
+				pointObj.setAttribute("y", Math.abs(newPositionsY[i]));
+		    })
+		
+		    TextObjs.forEach((textObj, i) => {
+		        textObj.setAttribute("x", Math.abs(newPositionsX[i])+20);
+		        textObj.setAttribute("y", Math.abs(newPositionsY[i])+40);
+		    })
+		
+		    lineNameIds.forEach((name, i) => {
+		        connections = name.split("_");
+		        lineObjs[i].setAttribute("x1", Math.abs(newPositionsX[pointNameIds.findIndex((name)=> name==connections[0])])+40);
+		        lineObjs[i].setAttribute("x2", Math.abs(newPositionsX[pointNameIds.findIndex((name)=> name==connections[1])])+40 );
+		        lineObjs[i].setAttribute("y1", Math.abs(newPositionsY[pointNameIds.findIndex((name)=> name==connections[0])])+30);
+		        lineObjs[i].setAttribute("y2", Math.abs(newPositionsY[pointNameIds.findIndex((name)=> name==connections[1])])+30 );
+		    })
+		    
+		
+		};
+		
+		var t = null;
+		
+		function startAnimation() {
+		    if(t == null) {
+		      t = setInterval(animate, 1);
+		    }
+		  }
+		  
+		function stepAnimation(){
+		    animate();
+		}
+		
+		function stopAnimation() {
+		    if (t != null) {
+		        clearInterval(t);
+		        t = null;
+				
+		    }
+		}
+	
+	(null)</script>
 	</body>
 </html>
