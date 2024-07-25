@@ -14,11 +14,10 @@
 int main() {
     
     // program variables
-    // String31 directory = "..\\graphs\\";
-    // String31 filename;
+    String31 directory = "..\\graphs\\";
+    String31 filename;
     int errorCode;
 
-    AdjList* currVertex;
     String31 startingVertexID;
     Graph* graph = createGraph();
     FILE *fp;

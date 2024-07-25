@@ -11,7 +11,7 @@
 
 #define FONTSIZE 12
 #define PI 3.14159l
-#define lGUI (1)
+#define lGUI (false)
 #define SVG_NODE_LIMIT 16
 
 #define OUTPUT_FILENAME "TRAVERSALS.txt"
@@ -209,7 +209,7 @@ char *drawSVGLineID(char *buffer, int n, position startPoint, position endPoint,
         "\" x2=\"",
         "\" y2=\"",
         "\" id=\"",
-        "\" style=\"stroke:black;stroke-width:5\"/>"
+        "\" style=\"stroke:black;stroke-width:1\"/>"
     };
     String255 strOutput = "";
     String31 strNumBuffer = "";
@@ -287,65 +287,6 @@ position computeNthPolygonPosition(position input, int radius, int order, int nS
     return input;
 }
 
-void createCircleGraph(FILE *fpGRAPH, Graph *graph){
-    String255 strBufferSVG = "";
-    dimension p;
-    p.height = 60;
-    p.width = 80;
-
-    position nodes[16];
-    String31 nodeNames[16];
-    int exploredNodes = 0;
-    int i = 0;
-    for (i = 0; i < graph->numVertices; i++){
-        nodes[i] = computeNthPolygonPosition(nodes[i], 200, i, graph->numVertices);
-        nodes[i].x += 200;
-        nodes[i].y += 200;
-    }
-    fprintf(fpGRAPH, "\n");
-
-    AdjList *currVertex = graph->firstAdjList;
-    while (currVertex != NULL) {
-        strcpy(nodeNames[exploredNodes], currVertex->vertexID);
-        exploredNodes++;
-        currVertex = currVertex->nextAdjList;
-        // ### printf("Here 4\n");
-    }
-
-
-
-    int j = 0;
-    int nIndex = 0;
-    String31 childNode ="";
-    position parentPos, childPos;
-    LOG(lGUI, "Points: %d\n", exploredNodes);
-    for (i = 0; i < graph->numVertices; i++){
-        AdjList *currAdjList = getAdjList(graph, nodeNames[i]);
-        AdjListNode *currNode = currAdjList->firstNeighbor;
-        parentPos = nodes[i];
-        nIndex = 0;
-        LOG(lGUI,"%s->%s\n", nodeNames[i], currNode->vertexID);
-        while (currNode != NULL && nIndex != -1) {
-            strcpy(childNode, currNode->vertexID);
-            currNode = currNode->nextNode;
-            nIndex = linearSearch(nodeNames, exploredNodes, childNode);
-            LOG(lGUI, "Conditions: %d && %d\n", currNode != NULL, nIndex != -1);
-            if (nIndex != -1) {
-                childPos = nodes[nIndex];
-                fprintf(fpGRAPH, "\t%s\n", drawSVGLineFromCenterToCenter(strBufferSVG, 255, p, parentPos, p, childPos));
-            } else {
-                LOG(lGUI, "%s Not found: %s\n", nodeNames[i], childNode);
-            }
-        }
-        linearSearch(nodeNames, exploredNodes, nodeNames[i]);
-    }
-
-    for (i = 0; i < graph->numVertices; i++){
-        fprintf(fpGRAPH, "\t%s\n", drawSVGRect(strBufferSVG, 255, p, nodes[i]));
-        fprintf(fpGRAPH, "\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, p, nodes[i], nodeNames[i]));
-    }
-}
-
 int linearSearch(String31 array[], int n, String15 key) {
     int index = -1, i = 0, hasFound = 0;
 
@@ -362,8 +303,8 @@ int linearSearch(String31 array[], int n, String15 key) {
 
 void instantiateCircleNodes(Graph *graph, dimension rectSize, position nodes[], int size){
     int i = 0, radius = (size - (rectSize.height > rectSize.width ? rectSize.height : rectSize.width) ) / 2;
-    for (i = 0; i < graph->vertices; i++){
-        nodes[i] = computeNthPolygonPosition(nodes[i], radius, i, graph->vertices);
+    for (i = 0; i < graph->numVertices; i++){
+        nodes[i] = computeNthPolygonPosition(nodes[i], radius, i, graph->numVertices);
         nodes[i].x += radius;
         nodes[i].y += radius;
     }
@@ -371,7 +312,7 @@ void instantiateCircleNodes(Graph *graph, dimension rectSize, position nodes[], 
 
 void instantiateBFSNodes(Graph *graph, position nodes[], dimension rectSize){
     int i = 0;
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         nodes[i].x = 0;
         nodes[i].y = 0;
     }
@@ -409,7 +350,7 @@ void createCircleGraph(FILE *fpGraph, Graph *graph, int size, Queue *lineNames, 
     bool isLineUnique = false;
 
     // For every parent node
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         currAdjList = getAdjList(graph, nodeNames[i]);
         currNode = currAdjList->firstNeighbor;
         parentPos = nodes[i];
@@ -436,7 +377,7 @@ void createCircleGraph(FILE *fpGraph, Graph *graph, int size, Queue *lineNames, 
         }
     }
 
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         fprintf(fpGraph, "\t%s\n", "<g>");
         fprintf(fpGraph, "\t\t%s\n", drawSVGRectId(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
         fprintf(fpGraph, "\t\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
@@ -463,15 +404,16 @@ int createBFSGraph(FILE *fpGraph, Graph* graph, int side, FILE *filePointerLayer
     int i = 0, layer, corres;
     String31 strLayer = "";
     i = 0;
-    int xOffset = 0;
+    int xOffset = 0, yOffset = 0;
     while(!feof(filePointerLayerInfo)){
         fscanf(filePointerLayerInfo, "%d %s ", &layer, strLayer);
         corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, strLayer);
         if (corres == -1)
             return -1;
         xOffset = rectSize.width*i;
-        nodes[corres].x = xOffset; 
-        nodes[corres].y = layer*100 + rectSize.height;
+        yOffset = layer*rectSize.height*3;
+        nodes[corres].x = xOffset + 10*i; 
+        nodes[corres].y = yOffset;
         i++;
     }
 
@@ -479,30 +421,31 @@ int createBFSGraph(FILE *fpGraph, Graph* graph, int side, FILE *filePointerLayer
     String31 parentID = "", childID = "";
     position parentPos, childPos;
     // For every parent node
-    for (i = 0; i < graph->vertices; i++){
+    for (i = 0; i < graph->numVertices; i++){
         currAdjList = getAdjList(graph, allNodeNames[i]);
         strcpy(parentID, currAdjList->parentID);
         
         if (strcmp(parentID, "ROOT") != 0) {
-            corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, parentID);
-            printf("Parent: %d\n", corres); 
-            if (corres == -1)
-                return -1;
-            parentPos = nodes[corres];
+            
             strcpy(childID, currAdjList->vertexID);
             corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, childID);
-
-            printf("Child: %d\n", corres); 
             if (corres == -1)
-                return -1;
+                return -2;
             childPos = nodes[corres];
-            strcpy(parentID, "1");
-            strcpy(childID, "1");
+            corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, parentID);
+            if (corres == -1)
+                return -3;
+            parentPos = nodes[corres];
+
+            printf("(%s %s)\n", childID, parentID); 
+
+            strcat(parentID, "1");
+            strcat(childID, "1");
             fprintf(fpGraph, "\t%s\n", drawSVGLineFromCenterToCenterId(strBufferSVG, 255, rectSize, parentPos, parentID, rectSize, childPos, childID));
         }
     }
     
-    for (i = 0; i <graph->vertices; i++){
+    for (i = 0; i <graph->numVertices; i++){
         strcpy(parentID, allNodeNames[i]);
         strcat(parentID, " ");
         fprintf(fpGraph, "\t%s\n", "<g>");
@@ -575,7 +518,7 @@ void createHTMLGraphic(Graph *graph){
     };
 
     dimension rectSize;
-    rectSize.height = 60;
+    rectSize.height = 40;
     rectSize.width = 80;
 
     FILE *filePointerOutputGUI  = fopen(OUTPUT_GUI_FILENAME, "w");
@@ -587,15 +530,19 @@ void createHTMLGraphic(Graph *graph){
     Queue *nameQueueTexts   = createQueue();
     String255 buffer = "";
     
-    int side = 500;
+    int side = 1000, errorCode = 0;
     // Set-up of HTML file
     writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 0, 3);
     
     // SVG 1
     fprintf(filePointerOutputGUI, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*5, CONST_SVG_TAGS[1], side*2, CONST_SVG_TAGS[2]);
-    createBFSGraph(filePointerOutputGUI, graph, side, filePointerLayerInfo, rectSize);
+    errorCode = createBFSGraph(filePointerOutputGUI, graph, side, filePointerLayerInfo, rectSize);
+    if (errorCode != 0){
+        printf("BFS Error Code: %d\n", errorCode);
+        printf("Please be sure to properly format the traversals.\n");
+    }
     writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 4, 8);
-    fprintf(filePointerOutputGUI, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*10, CONST_SVG_TAGS[1], side*10, CONST_SVG_TAGS[2]);
+    fprintf(filePointerOutputGUI, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*5, CONST_SVG_TAGS[1], side*3, CONST_SVG_TAGS[2]);
     createCircleGraph(filePointerOutputGUI, graph, side, nameQueueLines, nameQueuePoint, rectSize);
     
 

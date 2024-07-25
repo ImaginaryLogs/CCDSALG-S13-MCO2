@@ -10,6 +10,7 @@
 
 #define OUTPUT_FILENAME "TRAVERSALS.txt"
 #define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
+#define LTRA (true)
 
 /**
  * Traverses a graph data structure via Breadth-First Search (BFS) and prints the traversal to an output file.
@@ -25,7 +26,6 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
     bool hasFinishedExploringVertex;
     String31 currentVertexID;
     AdjListNode* currentNeighborNode;
-    String31 currentNeighborVertexID;
     String31 neighborArr[999]; // assume there is a maximum of 999 neighbors for any given node
     int neighborCount;
     int i;
@@ -72,6 +72,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         neighborCount = 0;
         while (!hasFinishedExploringVertex) {
             if (!isVertexExplored(graph, currentNeighborNode->vertexID)) {
+                LOG(LTRA, "%s->%s\n",parentNodeVertextID, currentNeighborNode->vertexID);
                 enqueue(unexploredNodesQueue, currentNeighborNode->vertexID);
                 setVertexToExplored(graph, currentNeighborNode->vertexID);
 
@@ -117,7 +118,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
     String31 currentNeighborVertexID;
     String31 neighborArr[999]; // assume there is a maximum of 999 neighbors for any given node
     int neighborCount;
-    int i;
+
 
     FILE* fp = fopen(OUTPUT_FILENAME, "a");
     if (fp == NULL) {
@@ -149,8 +150,6 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
 
         currentNeighborNode = currentVertexAdjList->firstNeighbor;
         hasFinishedExploringVertex = currentNeighborNode == NULL;
-        
-
 
         /* iterate through each neighbor of the current vertex */
         neighborCount = 0;
@@ -179,7 +178,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
     return 0;
 }
 
-void InorderTreeWalk(Graph* graph, char* currentVertexID, int n, FILE *fp){
+void InorderTreeWalk(Graph* graph, char* currentVertexID, int n, FILE *fp, bool isBFSRelative){
     ++n;
     if (n > 500)
         return;   
@@ -188,14 +187,16 @@ void InorderTreeWalk(Graph* graph, char* currentVertexID, int n, FILE *fp){
     AdjList* currentVertexAdjList = getAdjList(graph, currentVertexID);
     AdjList* currentNeighborAdjList;
     AdjListNode* currentNeighborNode = currentVertexAdjList->firstNeighbor;
-    bool hasFinishedExploringVertex = currentNeighborNode == NULL;
+    bool hasFinishedExploringVertex = currentNeighborNode == NULL, isExplorationOnBFS = false;
     setVertexToExplored(graph, currentVertexID);
-
+    int parentLayer = currentVertexAdjList->layer, childLayer = 0;
     while(!hasFinishedExploringVertex){
-        if (!isVertexExplored(graph, currentNeighborNode->vertexID)) {
+        currentNeighborAdjList = getAdjList(graph, currentNeighborNode->vertexID);
+        childLayer = currentNeighborAdjList->layer;
+        isExplorationOnBFS = (!isBFSRelative || childLayer > parentLayer);
+        if (!isVertexExplored(graph, currentNeighborNode->vertexID) && isExplorationOnBFS) {
             enqueue(childNodeQueue, currentNeighborNode->vertexID);
             setVertexToExplored(graph, currentNeighborNode->vertexID);
-            currentNeighborAdjList = getAdjList(graph, currentNeighborNode->vertexID);
             strcpy(currentNeighborAdjList->parentID, currentVertexID);
         }
         currentNeighborNode = currentNeighborNode->nextNode;
@@ -204,14 +205,16 @@ void InorderTreeWalk(Graph* graph, char* currentVertexID, int n, FILE *fp){
 
     if (!isQueueEmpty(childNodeQueue)){
         dequeue(childNodeQueue, childrenID);
-        InorderTreeWalk(graph, childrenID, n, fp);
+        InorderTreeWalk(graph, childrenID, n, fp, isBFSRelative);
         fprintf(fp, "%d %s\n", currentVertexAdjList->layer, currentVertexID);
+        fprintf(stdout, "%d %s\n", currentVertexAdjList->layer, currentVertexID);
         while(!isQueueEmpty(childNodeQueue)){
             dequeue(childNodeQueue, childrenID);
-            InorderTreeWalk(graph, childrenID, n, fp);
+            InorderTreeWalk(graph, childrenID, n, fp, isBFSRelative);
         }
     } else {
         fprintf(fp, "%d %s\n", currentVertexAdjList->layer, currentVertexID);
+        fprintf(stdout, "%d %s\n", currentVertexAdjList->layer, currentVertexID);
     }
     deleteQueue(&childNodeQueue);
 }
@@ -226,8 +229,8 @@ int inorderTraversal(Graph* graph, char* startingVertexID) {
         printf("Error opening output file!\n");
         return 1;
     }
-    
-    InorderTreeWalk(graph, startingVertexID, nodesExplored, fp);
+    bool isBasedOnBFS = true;
+    InorderTreeWalk(graph, startingVertexID, nodesExplored, fp, isBasedOnBFS);
     fclose(fp);
     return 0;
 }
