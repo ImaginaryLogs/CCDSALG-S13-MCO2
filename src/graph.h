@@ -22,14 +22,15 @@ typedef struct AdjacencyListNodeTag {
 
 
 typedef struct AdjacencyListTag {
+	String15 parentID;
 	String15 vertexID;
+	int layer;
 	int degree;
 	bool hasBeenExplored;
 	AdjListNode* firstNeighbor;
 	AdjListNode* lastNeighbor;
 	struct AdjacencyListTag* nextAdjList;
 } AdjList;
-
 
 typedef struct GraphTag {
 	int vertices;
@@ -49,6 +50,8 @@ AdjListNode* createAdjListNode(String15 vertexID) {
 AdjList* createAdjList(char* vertexID) {
 	AdjList* newAdjList = (AdjList*) malloc(sizeof(AdjList));
 	strcpy(newAdjList->vertexID, vertexID);
+	strcpy(newAdjList->parentID, "");
+	newAdjList->layer = 0;
 	newAdjList->degree = 0;
 	newAdjList->hasBeenExplored = false;
 	newAdjList->firstNeighbor = NULL;

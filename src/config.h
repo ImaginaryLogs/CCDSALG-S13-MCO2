@@ -6,7 +6,7 @@
 
 // LOGGING_CONSTS
 
-#define DEBUG (true)
+#define DEBUG (false)
 #define ENABLE_CLOCK (false && DEBUG)
 #define ENABLE_LOG_OPERATIONS (false)
 #define ENABLE_LOG_EVALUATE_POSTFIX (false)

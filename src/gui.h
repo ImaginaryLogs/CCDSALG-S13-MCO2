@@ -12,8 +12,12 @@
 #define FONTSIZE 12
 #define PI 3.14159l
 #define lGUI (1)
+#define SVG_NODE_LIMIT 16
 
 #define OUTPUT_FILENAME "TRAVERSALS.txt"
+#define PHSYIC_ENGINE_FILENAME "physic_engine.txt"
+#define OUTPUT_GUI_FILENAME "GuiGraph.html"
+#define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
 
 char *drawSVGRect(char *buffer, int n, dimension dSize, position rectTopLeftPostion){
     const String63 CONST_RECT_TAGS[5] = {
@@ -74,6 +78,54 @@ char *drawSVGRectId(char *buffer, int n, dimension dSize, position rectTopLeftPo
         switch(i){
             case 0:
                 pointBuffer = dSize.width;
+                sprintf(strNumBuffer, strNumFormat, pointBuffer);
+                strcat(strOutput, strNumBuffer);
+                break;
+            case 1:
+                pointBuffer = dSize.height;
+                sprintf(strNumBuffer, strNumFormat, pointBuffer);
+                strcat(strOutput, strNumBuffer);
+                break;
+            case 2:
+                pointBuffer = rectTopLeftPostion.x;
+                sprintf(strNumBuffer, strNumFormat, pointBuffer);
+                strcat(strOutput, strNumBuffer);
+                break;
+            case 3:
+                pointBuffer = rectTopLeftPostion.y;
+                sprintf(strNumBuffer, strNumFormat, pointBuffer);
+                strcat(strOutput, strNumBuffer);
+                break;
+            case 4: 
+                strcat(strOutput, name);
+        }
+            
+    }
+
+    strncpy(buffer, strOutput, n);
+    return buffer;
+}
+
+char *drawSVGRectWithText(char *buffer, int n, dimension dSize, position rectTopLeftPostion, char *name, char *text, int fontSize){
+    const String63 CONST_RECT_TAGS[6] = {
+        "<rect width=\"",
+        "\" height=\"",
+        "\" x=\"",
+        "\" y=\"",
+        "\" id=\"",
+        "\" rx=\"10\" ry=\"10\" fill=\"orange\"/>"
+    };
+    String255 strOutput = "";
+    String31 strNumBuffer = "";
+    String7 strNumFormat = "%d";
+
+    int i = 0;
+    int pointBuffer = 0;
+    for (i = 0; i < 6; i++){
+        strcat(strOutput, CONST_RECT_TAGS[i]);
+        switch(i){
+            case 0:
+                pointBuffer = dSize.width + ((int) strlen(text)) * fontSize;
                 sprintf(strNumBuffer, strNumFormat, pointBuffer);
                 strcat(strOutput, strNumBuffer);
                 break;
@@ -249,7 +301,7 @@ int linearSearch(String31 array[], int n, String15 key) {
     return index;
 }
 
-void instantiateNodes(Graph *graph, dimension rectSize, position nodes[], int size){
+void instantiateCircleNodes(Graph *graph, dimension rectSize, position nodes[], int size){
     int i = 0, radius = (size - (rectSize.height > rectSize.width ? rectSize.height : rectSize.width) ) / 2;
     for (i = 0; i < graph->vertices; i++){
         nodes[i] = computeNthPolygonPosition(nodes[i], radius, i, graph->vertices);
@@ -258,18 +310,24 @@ void instantiateNodes(Graph *graph, dimension rectSize, position nodes[], int si
     }
 }
 
-void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size, Queue *lineNames, Queue *pointNames){
+void instantiateBFSNodes(Graph *graph, position nodes[], dimension rectSize){
+    int i = 0;
+    for (i = 0; i < graph->vertices; i++){
+        nodes[i].x = 0;
+        nodes[i].y = 0;
+    }
+}
+
+void createCircleGraph(FILE *fpGraph, Graph *graph, int size, Queue *lineNames, Queue *pointNames, dimension rectSize){
     String255 strBufferSVG = "";
-    String31 nodeNames[16];
-    position nodes[16];
-    dimension rectSize;
-    rectSize.height = 60;
-    rectSize.width = 80;
+    String31 nodeNames[SVG_NODE_LIMIT];
+    position nodes[SVG_NODE_LIMIT];
+
     int i = 0;
 
-    instantiateNodes(graph, rectSize, nodes, size);
+    instantiateCircleNodes(graph, rectSize, nodes, size);
 
-    fprintf(fpGRAPH, "\n");
+    fprintf(fpGraph, "\n");
 
     int exploredNodes = 0;
     AdjList *currVertex = graph->firstAdjList;
@@ -309,7 +367,7 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size, Queue *lineNames, 
             isLineUnique = nIndex != -1 && queueSearch(traversedNodes, combinednames1) == -1 && queueSearch(traversedNodes, combinednames2) == -1;
             if (isLineUnique) {
                 childPos = nodes[nIndex];
-                fprintf(fpGRAPH, "\t%s\n", drawSVGLineFromCenterToCenterId(strBufferSVG, 255, rectSize, parentPos, nodeNames[i], rectSize, childPos, childName));
+                fprintf(fpGraph, "\t%s\n", drawSVGLineFromCenterToCenterId(strBufferSVG, 255, rectSize, parentPos, nodeNames[i], rectSize, childPos, childName));
                 enqueue(traversedNodes, combinednames1);
                 enqueue(lineNames, combinednames1);
                 enqueue(traversedNodes, combinednames2);
@@ -320,64 +378,94 @@ void createCircleGraph(FILE *fpGRAPH, Graph *graph, int size, Queue *lineNames, 
     }
 
     for (i = 0; i < graph->vertices; i++){
-        fprintf(fpGRAPH, "\t%s\n", "<g>");
-        fprintf(fpGRAPH, "\t\t%s\n", drawSVGRectId(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
-        fprintf(fpGRAPH, "\t\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
-        fprintf(fpGRAPH, "\t%s\n", "</g>");
+        fprintf(fpGraph, "\t%s\n", "<g>");
+        fprintf(fpGraph, "\t\t%s\n", drawSVGRectId(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
+        fprintf(fpGraph, "\t\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, rectSize, nodes[i], nodeNames[i]));
+        fprintf(fpGraph, "\t%s\n", "</g>");
     }
 }
 
-void createHTMLGraphic(Graph *graph){
-    const String31 OUTPUT_GUI_FILENAME = "GuiGraph.html";
-    const String127 CONST_HTML_TAGS[11] = {
-        "<!DOCTYPE html>\n\t<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\">",
-        "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
-        "\t\t<title>GUI</title>\n\t</head>\n\n\t<body>",
-        "\t<input type=\"button\" value=\"Start\" onclick=\"startAnimation()\"/>",
-	    "\t<input type=\"button\" value=\"Step\" onclick=\"stepAnimation()\" />",
-	    "\t<input type=\"button\" value=\"Stop\" onclick=\"stopAnimation()\" />",
-        "\t<h1>OUTPUT:</h1>",
-        "\t</svg>\n",
-        "<script>",
-        "</script>",
-        "\t</body>\n</html>",
-    };
-    FILE *fp = fopen(OUTPUT_GUI_FILENAME, "w");
+int createBFSGraph(FILE *fpGraph, Graph* graph, int side, FILE *filePointerLayerInfo, dimension rectSize){
+    String31 allNodeNames[SVG_NODE_LIMIT];
+    AdjList *currAdjList;
+
+    position nodes[SVG_NODE_LIMIT];
+
+    instantiateBFSNodes(graph, nodes, rectSize);
     
-    int nWrittenTags = 0;
-    for (nWrittenTags = 0; nWrittenTags < 7; nWrittenTags++){
-        fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
+    int exploredNodes = 0;
+    AdjList *currVertex = graph->firstAdjList;
+    while (currVertex != NULL) {
+        strcpy(allNodeNames[exploredNodes], currVertex->vertexID);
+        exploredNodes++;
+        currVertex = currVertex->nextAdjList;
+    }
+    
+    int i = 0, layer, corres;
+    String31 strLayer = "";
+    i = 0;
+    int xOffset = 0;
+    while(!feof(filePointerLayerInfo)){
+        fscanf(filePointerLayerInfo, "%d %s ", &layer, strLayer);
+        corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, strLayer);
+        if (corres == -1)
+            return -1;
+        xOffset = rectSize.width*i;
+        nodes[corres].x = xOffset; 
+        nodes[corres].y = layer*100 + rectSize.height;
+        i++;
     }
 
-    const String31 CONST_SVG_TAGS[3] = {
-        "<svg width=\"",
-        "\" height=\"",
-        "\">"
-    };
+    String255 strBufferSVG = "";
+    String31 parentID = "", childID = "";
+    position parentPos, childPos;
+    // For every parent node
+    for (i = 0; i < graph->vertices; i++){
+        currAdjList = getAdjList(graph, allNodeNames[i]);
+        strcpy(parentID, currAdjList->parentID);
+        
+        if (strcmp(parentID, "ROOT") != 0) {
+            corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, parentID);
+            printf("Parent: %d\n", corres); 
+            if (corres == -1)
+                return -1;
+            parentPos = nodes[corres];
+            strcpy(childID, currAdjList->vertexID);
+            corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, childID);
 
-    int side = 500;
-    fprintf(fp, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*10, CONST_SVG_TAGS[1], side*10, CONST_SVG_TAGS[2]);
-
-    // fprintf(fp, "%s\n", drawSVGRect(strBufferSVG, 255, p, e));
-    Queue *lineNames = createQueue();
-    Queue *pointNames = createQueue();
-    Queue *textNames = createQueue();
-    createCircleGraph(fp, graph, side, lineNames, pointNames);
-
-    for (nWrittenTags = 7; nWrittenTags < 9; nWrittenTags++){
-        fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
+            printf("Child: %d\n", corres); 
+            if (corres == -1)
+                return -1;
+            childPos = nodes[corres];
+            strcpy(parentID, "1");
+            strcpy(childID, "1");
+            fprintf(fpGraph, "\t%s\n", drawSVGLineFromCenterToCenterId(strBufferSVG, 255, rectSize, parentPos, parentID, rectSize, childPos, childID));
+        }
     }
+    
+    for (i = 0; i <graph->vertices; i++){
+        strcpy(parentID, allNodeNames[i]);
+        strcat(parentID, " ");
+        fprintf(fpGraph, "\t%s\n", "<g>");
+        fprintf(fpGraph, "\t\t%s\n", drawSVGRectId(strBufferSVG, 255, rectSize, nodes[i], parentID));
+        fprintf(fpGraph, "\t\t%s\n", drawSVGTextOnRectCenter(strBufferSVG, 255, rectSize, nodes[i], parentID));
+        fprintf(fpGraph, "\t%s\n", "</g>");
+    }
+    return 0;
+}
 
-    FILE *fp2 = fopen("physic_engine.txt", "r");
+void writeLinesIDs(FILE *fp, Queue *lineNames){
     String255 buffer = "";
-
     fprintf(fp, "\tconst lineNameIds = [ \"%s\"", dequeue(lineNames, buffer));
     while(!isQueueEmpty(lineNames)){
         fprintf(fp, ", ");
         fprintf(fp, "\"%s\"", dequeue(lineNames, buffer));
     }
     fprintf(fp, "]\n");
-    
+}
+
+void writePointIDs(FILE *fp, Queue *textNames, Queue *pointNames){
+    String255 buffer = "";
     enqueue(textNames, queueHead(pointNames));
     fprintf(fp, "\tconst pointNameIds = [ \"%s\"", dequeue(pointNames, buffer));
     while(!isQueueEmpty(pointNames)){
@@ -386,24 +474,89 @@ void createHTMLGraphic(Graph *graph){
         fprintf(fp, "\"%s\"", dequeue(pointNames, buffer));
     }
     fprintf(fp, "]\n");
+}
 
-
+void writeTextsIDs(FILE *fp, Queue *textNames){
+    String255 buffer = "";
     fprintf(fp, "\tconst textNames = [ \"Text%s\"", dequeue(textNames, buffer));
     while(!isQueueEmpty(textNames)){
         fprintf(fp, ", ");
         fprintf(fp, "\"Text%s\"", dequeue(textNames, buffer));
     }
     fprintf(fp, "]\n");
+}
 
-    while (!feof(fp2)) {
-        fprintf(fp, "\t%s", fgets(buffer, 255, fp2));
-    }
-
-    for (nWrittenTags = 9; nWrittenTags < 11; nWrittenTags++){
+void writeHTMLLines(FILE * fp, String127 CONST_HTML_TAGS[], int beginningPoint, int endPoint){
+    int nWrittenTags = 0;
+    for (nWrittenTags = beginningPoint; nWrittenTags < endPoint + 1; nWrittenTags++){
         fprintf(fp, "%s\n", CONST_HTML_TAGS[nWrittenTags]);
     }
+}
 
-    fclose(fp);
+void createHTMLGraphic(Graph *graph){ 
+    String127 CONST_HTML_TAGS[13] = {
+        "<!DOCTYPE html>\n\t<html lang=\"en\">\n\t<head>\n\t\t<meta charset=\"utf-8\">",
+        "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
+        "\t\t<title>GUI</title>\n\t</head>\n\n\t<body>",
+        "\t<h1>1 BFS TREE:</h1>",
+        "\t</svg>\n",
+        "\t<input type=\"button\" value=\"Start\" onclick=\"startAnimation()\"/>",
+	    "\t<input type=\"button\" value=\"Step\" onclick=\"stepAnimation()\" />",
+	    "\t<input type=\"button\" value=\"Stop\" onclick=\"stopAnimation()\" />",
+        "\t<h1>2 GRAPH:</h1>",
+        "\t</svg>\n",
+        "<script>",
+        "</script>",
+        "\t</body>\n</html>",
+    };
+    String31 CONST_SVG_TAGS[3] = {
+        "<svg width=\"",
+        "\" height=\"",
+        "\">"
+    };
+
+    dimension rectSize;
+    rectSize.height = 60;
+    rectSize.width = 80;
+
+    FILE *filePointerOutputGUI  = fopen(OUTPUT_GUI_FILENAME, "w");
+    FILE *filePointPhysicEngine = fopen(PHSYIC_ENGINE_FILENAME, "r");
+    FILE *filePointerLayerInfo  = fopen(LAYER_INFO_FILENAME, "r");
+    
+    Queue *nameQueueLines   = createQueue();
+    Queue *nameQueuePoint   = createQueue();
+    Queue *nameQueueTexts   = createQueue();
+    String255 buffer = "";
+    
+    int side = 500;
+    // Set-up of HTML file
+    writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 0, 3);
+    
+    // SVG 1
+    fprintf(filePointerOutputGUI, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*5, CONST_SVG_TAGS[1], side*2, CONST_SVG_TAGS[2]);
+    createBFSGraph(filePointerOutputGUI, graph, side, filePointerLayerInfo, rectSize);
+    writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 4, 8);
+    fprintf(filePointerOutputGUI, "\t%s%d%s%d%s\n", CONST_SVG_TAGS[0], side*10, CONST_SVG_TAGS[1], side*10, CONST_SVG_TAGS[2]);
+    createCircleGraph(filePointerOutputGUI, graph, side, nameQueueLines, nameQueuePoint, rectSize);
+    
+
+    /**
+     * Write the Physics Engine  
+     * SVG 2
+     */
+    writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 9, 10);
+    writeLinesIDs(filePointerOutputGUI, nameQueueLines);
+    writePointIDs(filePointerOutputGUI, nameQueueTexts, nameQueuePoint);
+    writeTextsIDs(filePointerOutputGUI, nameQueueTexts);
+
+    while (!feof(filePointPhysicEngine)) {
+        fprintf(filePointerOutputGUI, "\t%s", fgets(buffer, 255, filePointPhysicEngine));
+    }
+
+    // Closing of HTML file
+    writeHTMLLines(filePointerOutputGUI, CONST_HTML_TAGS, 11, 12);
+
+    fclose(filePointerOutputGUI);
 }
 
 #endif

@@ -61,9 +61,11 @@ int main() {
     printf("Finished BFS!\n");
     depthFirstSearch(graph, startingVertexID);
     printf("Finished DFS!\n");
-
-    // deleteGraph(graph);
-    printf("Reached end of program!\n");
+    inorderTraversal(graph, startingVertexID);
+    printf("Finished Calculating BFS Tree positions!\n");
     createHTMLGraphic(graph);
+    printf("Finished Printing Graph!\n");
+    printf("Reached end of program!\n");
+    deleteGraph(&graph);
     return 0;
 }

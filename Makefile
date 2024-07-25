@@ -30,7 +30,7 @@ run: $(BIN_DIR)/main.exe
 	@echo "Running Graphing Program..."
 	@echo ""
 	cd $(BIN_DIR); \
-		./main
+		./main.exe
 
 test:
 	@echo "\nBuilding\n"

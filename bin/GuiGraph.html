@@ -7,10 +7,63 @@
 	</head>
 
 	<body>
+	<h1>1 BFS TREE:</h1>
+	<svg width="2500" height="1000">
+	<line x1="120" y1="90" x2="40" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="280" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="440" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="600" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="360" y1="190" x2="680" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="200" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="360" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="120" y1="90" x2="760" y2="190" id="1_1" style="stroke:black;stroke-width:5"/>
+	<line x1="600" y1="290" x2="520" y2="290" id="1_1" style="stroke:black;stroke-width:5"/>
+	<g>
+		<rect width="80" height="60" x="80" y="60" id="Acheron " rx="10" ry="10" fill="orange"/>
+		<text id="TextAcheron "x="99" y="93" fill="black" font-size="12">Acheron </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="0" y="160" id="BlackSwan " rx="10" ry="10" fill="orange"/>
+		<text id="TextBlackSwan "x="13" y="193" fill="black" font-size="12">BlackSwan </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="240" y="260" id="Bronya " rx="10" ry="10" fill="orange"/>
+		<text id="TextBronya "x="262" y="293" fill="black" font-size="12">Bronya </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="400" y="260" id="FuXuan " rx="10" ry="10" fill="orange"/>
+		<text id="TextFuXuan "x="422" y="293" fill="black" font-size="12">FuXuan </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="560" y="260" id="RuanMei " rx="10" ry="10" fill="orange"/>
+		<text id="TextRuanMei "x="579" y="293" fill="black" font-size="12">RuanMei </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="640" y="260" id="SilverWolf " rx="10" ry="10" fill="orange"/>
+		<text id="TextSilverWolf "x="650" y="293" fill="black" font-size="12">SilverWolf </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="160" y="160" id="Sparkle " rx="10" ry="10" fill="orange"/>
+		<text id="TextSparkle "x="179" y="193" fill="black" font-size="12">Sparkle </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="320" y="160" id="Topaz " rx="10" ry="10" fill="orange"/>
+		<text id="TextTopaz "x="345" y="193" fill="black" font-size="12">Topaz </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="720" y="160" id="Zundamon " rx="10" ry="10" fill="orange"/>
+		<text id="TextZundamon "x="736" y="193" fill="black" font-size="12">Zundamon </text>
+	</g>
+	<g>
+		<rect width="80" height="60" x="480" y="260" id="Metan " rx="10" ry="10" fill="orange"/>
+		<text id="TextMetan "x="505" y="293" fill="black" font-size="12">Metan </text>
+	</g>
+	</svg>
+
 	<input type="button" value="Start" onclick="startAnimation()"/>
 	<input type="button" value="Step" onclick="stepAnimation()" />
 	<input type="button" value="Stop" onclick="stopAnimation()" />
-	<h1>OUTPUT:</h1>
+	<h1>2 GRAPH:</h1>
 	<svg width="5000" height="5000">
 
 	<line x1="460" y1="240" x2="420" y2="363" id="Acheron_BlackSwan" style="stroke:black;stroke-width:5"/>
@@ -294,28 +347,6 @@
 		    if (t != null) {
 		        clearInterval(t);
 		        t = null;
-	
-				
-	
-				initialObjPosX.forEach((pointObj, i) => {
-					pointObj.setAttribute("x", initObjPosX[i]);
-					pointObj.setAttribute("y", initObjPosY[i]);
-				})
-	
-				
-	
-				lineNameIds.forEach((name, i) => {
-					connections = name.split("_");
-					lineObjs[i].setAttribute("x1", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[0])])+30);
-					lineObjs[i].setAttribute("x2", Math.abs(initObjPosX[pointNameIds.findIndex((name)=> name==connections[1])])+30);
-					lineObjs[i].setAttribute("y1", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[0])])+40);
-					lineObjs[i].setAttribute("y2", Math.abs(initObjPosY[pointNameIds.findIndex((name)=> name==connections[1])])+40);
-				})
-	
-				TextObjs.forEach((textObj, i) => {
-					textObj.setAttribute("x", +initObjPosX[i]+30);
-					textObj.setAttribute("y", +initObjPosY[i]+40);
-				})
 				
 		    }
 		}
