@@ -1,0 +1,4 @@
+3
+Dipper -1
+Mabel -1
+Stan -1

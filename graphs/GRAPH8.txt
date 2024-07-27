@@ -1,0 +1,8 @@
+7
+Bashful Doc Dopey Grumpy Happy Sleepy Sneezy -1
+Doc Bashful Dopey Grumpy Happy Sleepy Sneezy -1
+Dopey Bashful Doc Grumpy Happy Sleepy Sneezy -1
+Grumpy Bashful Doc Dopey Happy Sleepy Sneezy -1
+Happy Bashful Doc Dopey Grumpy Sleepy Sneezy -1
+Sleepy Bashful Doc Dopey Grumpy Happy Sneezy -1
+Sneezy Bashful Doc Dopey Grumpy Happy Sleepy -1
