@@ -1,8 +1,15 @@
 
-Dipper         0
-Mabel          0
-Stan           0
+[0;36mAcheron        4[0m
+[0;36mBlackSwan      3[0m
+[0;36mBronya         3[0m
+[0;36mFuXuan         3[0m
+[0;36mRuanMei        3[0m
+[0;36mSilverWolf     2[0m
+[0;36mSparkle        3[0m
+[0;36mTopaz          7[0m
+[0;36mZundamon       2[0m
+[0;36mMetan          2[0m
 
-Dipper 
+[0;32mAcheron BlackSwan Sparkle Topaz Zundamon Bronya FuXuan RuanMei SilverWolf Metan [0m
 
-Dipper 
+[0;35mAcheron BlackSwan Sparkle Topaz Bronya FuXuan RuanMei Metan SilverWolf Zundamon [0m

@@ -179,8 +179,7 @@ int constructGraph(char* filename, Graph* graph) {
 void printGraphVertexInfoToFile(FILE* fp, Graph* graph) {
 	AdjList* currVertex = graph->firstAdjList;
     while (currVertex != NULL) {
-        // fprintf(fp, "\n%s%-15s%d%s", F_CYAN, currVertex->vertexID, currVertex->degree, F_NORMAL);
-		fprintf(fp, "\n%-15s%d", currVertex->vertexID, currVertex->degree);
+        fprintf(fp, "\n%s%-15s%d%s", F_CYAN, currVertex->vertexID, currVertex->degree, F_NORMAL);
         currVertex = currVertex->nextAdjList;
     }
 }

@@ -38,8 +38,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         printf("Error opening output file.\n");
         return -1;
     }
-    // fprintf(fp, "\n\n%s", F_GREEN);
-    fprintf(fp, "\n\n");
+    fprintf(fp, "\n\n%s", F_GREEN);
 
     setGraphToUnexplored(graph);
     enqueue(unexploredNodesQueue, startingVertexID);
@@ -103,7 +102,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         //fprintf(fpLayer, "(%s, %s, %d) ", currentVertexID, currentVertexAdjList->parentID, currentVertexAdjList->layer);
     }
 
-    // fprintf(fp, "%s", F_NORMAL);
+    fprintf(fp, "%s", F_NORMAL);
     fclose(fp);
     //fclose(fpLayer);
     return 0;
@@ -134,8 +133,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
         printf("Error opening output file.\n");
         return -1;
     }
-    // fprintf(fp, "\n\n%s", F_MAGENTA);
-    fprintf(fp, "\n\n");
+    fprintf(fp, "\n\n%s", F_MAGENTA);
 
     setGraphToUnexplored(graph);
     push(unexploredNodesStack, startingVertexID);
@@ -187,7 +185,7 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
         fprintf(fp, "%s ", currentVertexID); // print the vertex ID to the output file
     }
 
-    // fprintf(fp, "%s", F_NORMAL);
+    fprintf(fp, "%s", F_NORMAL);
     fprintf(fp, "\n");
     fclose(fp);
     
