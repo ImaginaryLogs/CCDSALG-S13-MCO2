@@ -12,12 +12,11 @@
 #define FONTSIZE 12
 #define PI 3.14159l
 #define lGUI (false)
-#define SVG_NODE_LIMIT 16
+#define SVG_NODE_LIMIT 32
 
-#define OUTPUT_FILENAME "TRAVERSALS.txt"
-#define PHSYIC_ENGINE_FILENAME "physic_engine.txt"
-#define OUTPUT_GUI_FILENAME "GuiGraph.html"
-#define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
+#define PHSYIC_ENGINE_FILENAME "..\\bin\\physic_engine.txt"
+#define OUTPUT_GUI_FILENAME "..\\bin\\GuiGraph.html"
+#define LAYER_INFO_FILENAME "..\\bin\\LAYERS_INFO.txt"
 
 char *drawSVGRect(char *buffer, int n, dimension dSize, position rectTopLeftPostion){
     const String63 CONST_RECT_TAGS[5] = {
@@ -314,7 +313,7 @@ void instantiateBFSNodes(Graph *graph, position nodes[], dimension rectSize){
     int i = 0;
     for (i = 0; i < graph->numVertices; i++){
         nodes[i].x = 0;
-        nodes[i].y = 0;
+        nodes[i].y = -200;
     }
 }
 

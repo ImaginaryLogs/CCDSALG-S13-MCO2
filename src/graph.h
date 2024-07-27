@@ -179,11 +179,11 @@ int constructGraph(char* filename, Graph* graph) {
 void printGraphVertexInfoToFile(FILE* fp, Graph* graph) {
 	AdjList* currVertex = graph->firstAdjList;
     while (currVertex != NULL) {
-        fprintf(fp, "\n%s%-15s%d%s", F_CYAN, currVertex->vertexID, currVertex->degree, F_NORMAL);
+        // fprintf(fp, "\n%s%-15s%d%s", F_CYAN, currVertex->vertexID, currVertex->degree, F_NORMAL);
+		fprintf(fp, "\n%-15s%d", currVertex->vertexID, currVertex->degree);
         currVertex = currVertex->nextAdjList;
     }
 }
-
 
 /**
  * Gets an adjacency list from a graph given a vertex ID.
@@ -207,6 +207,19 @@ AdjList* getAdjList(Graph* graph, char* vertexID) {
 	return adjList;
 }
 
+/**
+ * Corrects a vertex ID into the appropriate casing, if it exists.
+ * @param vertexID - vertex ID being corrected
+ * @return true if the vertex ID exists; false, otherwise
+ */
+bool rectifyVertexID(Graph* graph, String31 vertexID) {
+	AdjList* adjList = getAdjList(graph, vertexID);
+	if (NULL == adjList) {
+		return false;
+	}
+	strcpy(vertexID, adjList->vertexID);
+	return true;
+}
 
 /**
  * Determines whether a vertex exists in a graph.

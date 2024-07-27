@@ -7,8 +7,6 @@
 #include "traversal.h"
 #include "gui.h"
 
-#define TEST_INPUT_FILENAME "GRAPH2.txt"
-
 // #define TEST_INPUT_FILENAME "..\\graphs\\GRAPH2.txt" // testing
 
 int main() {
@@ -48,6 +46,12 @@ int main() {
     scanf(" %s", startingVertexID);
 
     /* execute the chosen traversal method and produce the output file */
+    printf("%s", F_NORMAL);
+    if(!rectifyVertexID(graph, startingVertexID)) {
+        printf("%sVertex %s not found.%s\n", F_RED, startingVertexID, F_NORMAL);
+        return 1;
+    }
+
     breadthFirstSearch(graph, startingVertexID);
     printf("Finished BFS!\n");
     depthFirstSearch(graph, startingVertexID);

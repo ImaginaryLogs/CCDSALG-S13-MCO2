@@ -8,8 +8,8 @@
 #include "queue.h"
 #include "graph.h"
 
-#define OUTPUT_FILENAME "TRAVERSALS.txt"
-#define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
+#define OUTPUT_FILENAME "..\\bin\\TRAVERSALS.txt"
+#define LAYER_INFO_FILENAME "..\\bin\\LAYERS_INFO.txt"
 #define LTRA (true)
 
 /**
@@ -19,13 +19,14 @@
  * @return 0 if the traversal is successul; 1 if any problem occurred midway
  */
 int breadthFirstSearch(Graph* graph, char* startingVertexID) {
-    signal(SIGSEGV, detectCrash);
+    // signal(SIGSEGV, detectCrash);
     Queue* unexploredNodesQueue = createQueue();
     AdjList* currentVertexAdjList;
     int errorCode;
     bool hasFinishedExploringVertex;
     String31 currentVertexID;
     AdjListNode* currentNeighborNode;
+    String31 currentNeighborVertexID;
     String31 neighborArr[999]; // assume there is a maximum of 999 neighbors for any given node
     int neighborCount;
     int i;
@@ -33,12 +34,12 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
 
     FILE* fp = fopen(OUTPUT_FILENAME, "a");
     //FILE* fpLayer = fopen("Layers.txt", "w");
-
     if (fp == NULL) {
         printf("Error opening output file.\n");
         return -1;
     }
-    fprintf(fp, "\n\n%s", F_GREEN);
+    // fprintf(fp, "\n\n%s", F_GREEN);
+    fprintf(fp, "\n\n");
 
     setGraphToUnexplored(graph);
     enqueue(unexploredNodesQueue, startingVertexID);
@@ -61,6 +62,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
             printf("%sVertex %s not found.%s\n", F_RED, currentVertexID, F_NORMAL);
             return -1;
         }
+        strcpy(currentVertexID, currentVertexAdjList->vertexID); // fixes incorrect casing, if so
         
         currentNeighborNode = currentVertexAdjList->firstNeighbor;
         hasFinishedExploringVertex = currentNeighborNode == NULL;
@@ -71,10 +73,17 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         /* iterate through each neighbor of the current vertex */
         neighborCount = 0;
         while (!hasFinishedExploringVertex) {
+            strcpy(currentNeighborVertexID, currentNeighborNode->vertexID);
+            if (!doesVertexExist(graph, currentNeighborVertexID)) {
+                printf("%sVertex %s not found.%s\n", F_RED, currentNeighborVertexID, F_NORMAL);
+                return -1;
+            }
             if (!isVertexExplored(graph, currentNeighborNode->vertexID)) {
                 LOG(LTRA, "%s->%s\n",parentNodeVertextID, currentNeighborNode->vertexID);
-                enqueue(unexploredNodesQueue, currentNeighborNode->vertexID);
-                setVertexToExplored(graph, currentNeighborNode->vertexID);
+
+                strcpy(neighborArr[neighborCount], currentNeighborVertexID);
+                ++neighborCount;
+                setVertexToExplored(graph, currentNeighborVertexID);
 
                 childNode = getAdjList(graph, currentNeighborNode->vertexID);
                 strcpy(childNode->parentID, parentNodeVertextID);
@@ -83,9 +92,9 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
             currentNeighborNode = currentNeighborNode->nextNode;
             hasFinishedExploringVertex = currentNeighborNode == NULL;
         }
-        // TODO: Function that sorts the neighbor array in increasing/decreasing lexicographic order.
+        // Sort the neighbor array in increasing lexicographic order.
         sortArr(neighborArr, neighborCount, true);
-        // TODO: Append the sorted neighbor array to the unexploredNodesStruct.
+        // Append the sorted neighbor array to the unexploredNodesStruct.
         for (i = 0; i < neighborCount; ++i) {
             enqueue(unexploredNodesQueue, neighborArr[i]);
             strcpy(neighborArr[i], ""); // simultaneously clear the neighbor array
@@ -94,7 +103,7 @@ int breadthFirstSearch(Graph* graph, char* startingVertexID) {
         //fprintf(fpLayer, "(%s, %s, %d) ", currentVertexID, currentVertexAdjList->parentID, currentVertexAdjList->layer);
     }
 
-    fprintf(fp, "%s", F_NORMAL);
+    // fprintf(fp, "%s", F_NORMAL);
     fclose(fp);
     //fclose(fpLayer);
     return 0;
@@ -118,14 +127,15 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
     String31 currentNeighborVertexID;
     String31 neighborArr[999]; // assume there is a maximum of 999 neighbors for any given node
     int neighborCount;
-
+    int i;
 
     FILE* fp = fopen(OUTPUT_FILENAME, "a");
     if (fp == NULL) {
         printf("Error opening output file.\n");
         return -1;
     }
-    fprintf(fp, "\n\n%s", F_MAGENTA);
+    // fprintf(fp, "\n\n%s", F_MAGENTA);
+    fprintf(fp, "\n\n");
 
     setGraphToUnexplored(graph);
     push(unexploredNodesStack, startingVertexID);
@@ -167,11 +177,17 @@ int depthFirstSearch(Graph* graph, char* startingVertexID) {
             currentNeighborNode = currentNeighborNode->nextNode;
             hasFinishedExploringVertex = currentNeighborNode == NULL;
         }
-
-        fprintf(fp, "%s\n", currentVertexID); // print the vertex ID to the output file
+        // Sort the neighbor array in decreasing lexicographic order.
+        sortArr(neighborArr, neighborCount, false);
+        // Append the sorted neighbor array to the unexploredNodesStruct.
+        for (i = 0; i < neighborCount; ++i) {
+            push(unexploredNodesStack, neighborArr[i]);
+            strcpy(neighborArr[i], ""); // simultaneously clear the neighbor array
+        }
+        fprintf(fp, "%s ", currentVertexID); // print the vertex ID to the output file
     }
 
-    fprintf(fp, "%s", F_NORMAL);
+    // fprintf(fp, "%s", F_NORMAL);
     fprintf(fp, "\n");
     fclose(fp);
     
