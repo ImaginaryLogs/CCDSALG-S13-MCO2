@@ -12,7 +12,7 @@
 #define FONTSIZE 12
 #define PI 3.14159l
 #define lGUI (false)
-#define SVG_NODE_LIMIT 16
+#define SVG_NODE_LIMIT 32
 
 #define PHSYIC_ENGINE_FILENAME "..\\bin\\physic_engine.txt"
 #define OUTPUT_GUI_FILENAME "..\\bin\\GuiGraph.html"
@@ -313,7 +313,7 @@ void instantiateBFSNodes(Graph *graph, position nodes[], dimension rectSize){
     int i = 0;
     for (i = 0; i < graph->numVertices; i++){
         nodes[i].x = 0;
-        nodes[i].y = 0;
+        nodes[i].y = -200;
     }
 }
 
