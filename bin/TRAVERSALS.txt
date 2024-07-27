@@ -1,21 +1,15 @@
 
-[0;36m1              2[0m
-[0;36m2              3[0m
-[0;36m3              3[0m
-[0;36m4              3[0m
-[0;36m5              3[0m
-[0;36m6              3[0m
-[0;36m7              3[0m
-[0;36m8              1[0m
-[0;36m9              1[0m
-[0;36m10             1[0m
-[0;36m11             1[0m
-[0;36m12             1[0m
-[0;36m13             1[0m
-[0;36m14             1[0m
-[0;36m15             1[0m
+[0;36mAcheron        4[0m
+[0;36mBlackSwan      3[0m
+[0;36mBronya         3[0m
+[0;36mFuXuan         3[0m
+[0;36mRuanMei        3[0m
+[0;36mSilverWolf     2[0m
+[0;36mSparkle        3[0m
+[0;36mTopaz          7[0m
+[0;36mZundamon       2[0m
+[0;36mMetan          2[0m
 
-[0;32m14 7 3 15 1 6 2 12 13 4 5 8 9 10 11 [0m
+[0;32mBronya FuXuan RuanMei Topaz SilverWolf Metan Acheron BlackSwan Sparkle Zundamon [0m
 
-[0;35m14
-[0m
+[0;35mBronya FuXuan SilverWolf RuanMei Metan Zundamon Acheron BlackSwan Sparkle Topaz [0m

@@ -184,7 +184,6 @@ void printGraphVertexInfoToFile(FILE* fp, Graph* graph) {
     }
 }
 
-
 /**
  * Gets an adjacency list from a graph given a vertex ID.
  * @param graph - pointer to a graph
@@ -207,6 +206,19 @@ AdjList* getAdjList(Graph* graph, char* vertexID) {
 	return adjList;
 }
 
+/**
+ * Corrects a vertex ID into the appropriate casing, if it exists.
+ * @param vertexID - vertex ID being corrected
+ * @return true if the vertex ID exists; false, otherwise
+ */
+bool rectifyVertexID(Graph* graph, String31 vertexID) {
+	AdjList* adjList = getAdjList(graph, vertexID);
+	if (NULL == adjList) {
+		return false;
+	}
+	strcpy(vertexID, adjList->vertexID);
+	return true;
+}
 
 /**
  * Determines whether a vertex exists in a graph.
