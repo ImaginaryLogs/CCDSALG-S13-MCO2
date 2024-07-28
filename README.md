@@ -160,17 +160,11 @@ The BFS GUI algorithm takes the position information of the text file and exagge
 
 The GUI BFS tree algorithm creates lines from one vertex to its parent. Unless the given node's parent is "ROOT", it will draw an SVG line from that node to it.
 
-## 2.6 Graph Limitations {DELETE THIS JAHHAHHA WHAT THE}
-Our program can detect the errors stated in the specifications, such as the nonexistent start vertex input and the nonexistent file name input. It can also detect nonexistent vertices inside an adjacency list. However, the following errors are **not** handled by the program:
+## 2.6 Graph Limitations 
+Our program can detect the errors stated in the specifications, such as the nonexistent start vertex input and the nonexistent file name input. Though not necessary (as the specs assume the input file is always correct), it can also detect nonexistent vertices inside an adjacency list. 
 
-1. Incorrect adjacency information about the graph
-    - For instance, adjacency lists $ \text{Bruce : [Clark, Diana]} $ and $ \text{Clark : [Diana]} $ are invalid as Bruce and Clark are supposedly connected, but Bruce is not in Clark's adjacency list.
-    - [PLEASE CONFIRM] Incorrect number of degrees
-    - [PLEASE CONFIRM] Incorrect file format
-    - [PLEASE CONFIRM] Non-existence or lack of sentinel value of -1 in input.
-    - [PLEASE CONFIRM] Duplicate Edges and Self-Loops
-  Besides catching non-existent vertices either in the start vertex input or in the adjacency lists, the program will assume that the input graph is correct.
-
-2. Consequently, an incorrect input for edges
+The only limitations we can think of are graphs that have too many vertices.
 
 ## 2.7 Test Cases
+
+For the test cases, we have tested the sample test cases that results to an error, such as the nonexistent start vertex input and the nonexistent file name input. Attached in the next pages are the test cases for valid inputs.
