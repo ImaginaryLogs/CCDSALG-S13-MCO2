@@ -20,10 +20,11 @@ This project is created by Group 15 for their MC02 Project in their CCDSALG Clas
 ## 1.2 Authors and Contributions
 These are university students of De La Salle University - Manila, Philippines. They are:
 
-  1. Bunyi, Christian Joseph C. @cjbnyi - Graph Implementation
-  2. Campo, Roan Cedric V. @ImaginaryLogs - GUI Implementation
-  3. Chan, Enzo Rafael S. @nomu-chan - Traversals Implementation
-
+| Profile | Author| Aspect |
+| --------|-------|--------|
+|[<img src="https://github.com/cjbnyi.png" width="60px;"/><br /><sub><a href="https://github.com/cjbnyi}"></a></sub>](https://github.com/cjbnyi/)| Bunyi, Christian Joseph C. <br /> (@cbjnyi) | Graph Implementation |
+|[<img src="https://github.com/ImaginaryLogs.png" width="60px;"/><br /><sub><a href="https://github.com/ImaginaryLogs}"></a></sub>](https://github.com/ImaginaryLogs/)| Campo, Roan Cedric V. <br /> (@ImaginaryLogs) | GUI Implementation |
+|[<img src="https://github.com/nomu-chan.png" width="60px;"/><br /><sub><a href="https://github.com/nomu-chan}"></a></sub>](https://github.com/nomu-chan/)| Chan, Enzo Rafael S. <br /> (@nomu-chan) | Traversals Implementation |
 
 
 # 2 Code Documentation and Description
@@ -134,12 +135,12 @@ Similarly, though not required, the DFS function can determine if an invalid nei
 For the drawing of any graph, an HTML file is made with the corresponding SVG graphical representation of the said graph. 
 
 The vertices are plotted on a circle calculated using the parametric equations of circle. 
-The x-coordinate is calculated by $x= cos(2\pi \cdot \frac{i}{m} )$, and the y-coordinate is calculated using $y= sin(2\pi \cdot \frac{i}{m})$.
+The x-coordinate is calculated by $x= \text{radius}*cos(2\pi \cdot \frac{i}{m} )$, and the y-coordinate is calculated using $y= \text{radius}*sin(2\pi \cdot \frac{i}{m})$.
 Lines are drawn to connect each vertex to their neighboring nodes. 
 
 A circular relationship graph was used to display a given graph so that for each point on the circle, every other possible point is visible.
 
-The circular relationship graph has an in-built physics engine to display the graph in different ways based on the connection it has. 
+The circular relationship graph has an in-built physics engine coded using JavaScript to display the graph in different ways based on the connection it has. It calculates new positions based on how near it is to a fellow node, and the force acted upon by the connections that acts like spring. This is an auxiliary feature as to display the graph in different ways based on how the bonds within molecules arrange themselves in nature.
 
 ## 2.5 Drawing of BFS tree
 For the drawing of the BFS tree, the same HTML file of any given graph is used with the corresponding SVG graphical representation of the said BFS Tree. 
