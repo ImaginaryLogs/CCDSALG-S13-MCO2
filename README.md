@@ -140,7 +140,7 @@ Lines are drawn to connect each vertex to their neighboring nodes.
 
 A circular relationship graph was used to display a given graph so that for each point on the circle, every other possible point is visible.
 
-The circular relationship graph has an in-built physics engine coded using JavaScript to display the graph in different ways based on the connection it has. It calculates new positions based on how near it is to a fellow node, and the force acted upon by the connections that acts like spring. This is an auxiliary feature as to display the graph in different ways based on how the bonds within molecules arrange themselves in nature.
+The circular relationship graph has an in-built physics engine coded using JavaScript to display the graph in different ways based on the connection it has. It calculates new positions based on how near it is to a fellow node, and the force acted upon by the connections that acts like spring. This is an auxiliary feature as to display the graph in different ways based on how the bonds of atoms within molecules arrange themselves in nature.
 
 ## 2.5 Drawing of BFS tree
 For the drawing of the BFS tree, the same HTML file of any given graph is used with the corresponding SVG graphical representation of the said BFS Tree. 
