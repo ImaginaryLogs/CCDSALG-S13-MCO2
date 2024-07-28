@@ -1,12 +1,18 @@
 # CCDSALG-MCO2
-
+ 
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [1 Introduction](#1-introduction)
   - [1.1 Background](#11-background)
-  - [1.2 Authors](#12-authors)
+  - [1.2 Authors and Contributions](#12-authors-and-contributions)
 - [2 Code Documentation and Description](#2-code-documentation-and-description)
   - [2.1 Graph Implementation](#21-graph-implementation)
+  - [2.2 Breadth First Search Algorithm Implementation](#22-breadth-first-search-algorithm-implementation)
+  - [2.3 Depth First Search Algorithm Implementation](#23-depth-first-search-algorithm-implementation)
+  - [2.4 Drawing of Given Graph](#24-drawing-of-given-graph)
+  - [2.5 Drawing of BFS Tree](#25-drawing-of-bfs-tree)
+  - [2.6 Graph Limitations](#26-graph-limitations)
+  - [2.7 Test Cases](#27-test-cases)
 
 # 1 Introduction
 
