@@ -14,9 +14,9 @@
 #define lGUI (false)
 #define SVG_NODE_LIMIT 32
 
-#define PHSYIC_ENGINE_FILENAME "..\\bin\\physic_engine.txt"
-#define OUTPUT_GUI_FILENAME "..\\bin\\GuiGraph.html"
-#define LAYER_INFO_FILENAME "..\\bin\\LAYERS_INFO.txt"
+#define PHSYIC_ENGINE_FILENAME "physic_engine.txt"
+#define OUTPUT_GUI_FILENAME "GuiGraph.html"
+#define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
 
 char *drawSVGRect(char *buffer, int n, dimension dSize, position rectTopLeftPostion){
     const String63 CONST_RECT_TAGS[5] = {
@@ -404,7 +404,7 @@ int createBFSGraph(FILE *fpGraph, Graph* graph, int side, FILE *filePointerLayer
     String31 strLayer = "";
     i = 0;
     int xOffset = 0, yOffset = 0;
-    while(!feof(filePointerLayerInfo)){
+    while (!feof(filePointerLayerInfo)) {
         fscanf(filePointerLayerInfo, "%d %s ", &layer, strLayer);
         corres = linearSearch(allNodeNames, SVG_NODE_LIMIT, strLayer);
         if (corres == -1)

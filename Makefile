@@ -25,12 +25,12 @@ build: $(SRCS)
 	@echo ""
 	@echo "=== Building Complete ================================="
 
-run: $(BIN_DIR)/main.exe
+run: $(BIN_DIR)/main
 	@echo ""
 	@echo "Running Graphing Program..."
 	@echo ""
 	cd $(BIN_DIR); \
-		./main.exe
+		./main
 
 test:
 	@echo "\nBuilding\n"

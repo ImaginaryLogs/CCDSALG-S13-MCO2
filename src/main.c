@@ -12,7 +12,7 @@
 int main() {
     
     // program variables
-    String31 directory = "..\\graphs\\";
+    String31 directory = "";
     String31 filename;
     int errorCode;
 

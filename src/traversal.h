@@ -8,8 +8,8 @@
 #include "queue.h"
 #include "graph.h"
 
-#define OUTPUT_FILENAME "..\\bin\\TRAVERSALS.txt"
-#define LAYER_INFO_FILENAME "..\\bin\\LAYERS_INFO.txt"
+#define OUTPUT_FILENAME "TRAVERSALS.txt"
+#define LAYER_INFO_FILENAME "LAYERS_INFO.txt"
 #define LTRA (true)
 
 /**
