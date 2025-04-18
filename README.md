@@ -1,5 +1,11 @@
-# CCDSALG-MCO2
- 
+# CCDSALG-MCO2 - **Graph Travesal**
+
+![Static Badge](https://img.shields.io/badge/AY2324--T3-CCDSALG-yellow)
+
+A Data Structures and Algorithms (CCDSALG) Project.
+
+**Authors**: *Bunyi*, *Campo*, *Chan*
+
 # Table of Contents
 - [Table of Contents](#table-of-contents)
 - [1 Introduction](#1-introduction)
@@ -18,7 +24,7 @@
 
 > "What is the Social Network (MC02)?"
 
-This is a simple program that uses an application of Undirected Graphs, along with Depth First Search and Breadth First Search.
+This is a simple program that uses an application of **Undirected Graphs**, along with Depth First Search (DFS) and Breadth First Search (BFS).
 
 ## 1.1 Background
 This project is created by Group 15 for their MC02 Project in their CCDSALG Class S13. This is under De La Salle University - Manila.
@@ -28,7 +34,7 @@ These are university students of De La Salle University - Manila, Philippines. T
 
 | Profile | Author| Aspect |
 | --------|-------|--------|
-|[<img src="https://github.com/cjbnyi.png" width="60px;"/><br /><sub><a href="https://github.com/cjbnyi}"></a></sub>](https://github.com/cjbnyi/)| Bunyi, Christian Joseph C. <br /> (@cbjnyi) | Graph Implementation |
+|[<img src="https://github.com/qu1r0ra.png" width="60px;"/><br /><sub><a href="https://github.com/qu1r0ra"></a></sub>](https://github.com/qu1r0ra/)| Bunyi, Christian Joseph C. <br /> (@qu1r0ra) | Graph Implementation |
 |[<img src="https://github.com/ImaginaryLogs.png" width="60px;"/><br /><sub><a href="https://github.com/ImaginaryLogs}"></a></sub>](https://github.com/ImaginaryLogs/)| Campo, Roan Cedric V. <br /> (@ImaginaryLogs) | GUI Implementation |
 |[<img src="https://github.com/nomu-chan.png" width="60px;"/><br /><sub><a href="https://github.com/nomu-chan}"></a></sub>](https://github.com/nomu-chan/)| Chan, Enzo Rafael S. <br /> (@nomu-chan) | Traversals Implementation |
 
@@ -43,18 +49,18 @@ The graph contains three tags/nodes: A graph tag, which contains adjacency list 
 Given the following (tree) graph using numbers for now instead of names/Vertex IDs:
 
 $$
-\begin{array}{l}
-\text{1 (Root)} \\
-\quad \text{├── 2 (Branch)} \\
-\quad \quad \text{├── 4 (Sub-branch)} \\
-\quad \quad \quad \text{├── 7 (Leaf)} \\
-\quad \quad \quad \text{└── 8 (Leaf)} \\
-\quad \quad \text{└── 5 (Sub-branch)} \\
-\quad \quad \quad \text{└── 9 (Leaf)} \\
-\quad \text{└── 3 (Branch)} \\
-\quad \quad \text{└── 6 (Sub-branch)} \\
-\quad \quad \quad \text{└── 10 (Leaf)} \\
-\end{array}
+\begin{align*}
+&\text{1 (Root)} \\
+&\quad \text{┣┳━ 2 (Branch)} \\
+&\quad \text{┃┣┳━ 4 (Sub-branch)} \\
+&\quad \text{┃┃┣━━ 7 (Leaf)} \\
+&\quad \text{┃┃┗━━ 8 (Leaf)} \\
+&\quad \text{┃┣┳━ 5 (Sub-branch)} \\
+&\quad \text{┃┃┗━━ 9 (Leaf)} \\
+&\quad \text{┗┳━ 3 (Branch)} \\
+&\quad \quad \text{┗┳━ 6 (Sub-branch)} \\
+&\quad \quad \quad \text{┗━━ 10 (Leaf)} \\
+&\end{align*}
 $$
 
 And its adjacency list:
